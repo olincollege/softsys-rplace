@@ -21,3 +21,7 @@ We were inspired by the subreddit `r/place`, which was a canvas where users coul
 | Build off existing boilerplate code to have multiple clients connect to a server  | Maya             | Multiple clients can connect to the same server           |
 | Figure out how to share gamestates between server and client                      | Berwin           | Architecture and/or implementation exists                 |
 | Look into getting mouse click coordinates instead of using arrow keys to navigate | Berwin           | N/A, maybe some sample code                               |
+
+### Team Workspaces
+* [GitHub repo](https://github.com/olincollege/softsys-rplace)
+* [Todoist](https://todoist.com/app/project/2289787951)
