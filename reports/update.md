@@ -13,6 +13,7 @@ We were inspired by the subreddit `r/place`, which was a canvas where users coul
 * Chapter 11 in Griffiths, D. (2012). Head First C. O’Reilly Media.
 * [Beej's guide to network programming](https://beej.us/guide/bgnet/)
 * `ncurses` documentation
+    * [Sample `ncurses` code](http://www.paulgriffiths.net/program/c/curses.php)
 
 ### Ongoing work
 | **Task**                                                                          | **Point person** | **Deliverable**                                           |
