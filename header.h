@@ -5,8 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-//Non-Standard C libraries
+// Non-Standard C libraries
 #include <ncurses.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
 
 // board related functions
 #define N_ROWS 100
