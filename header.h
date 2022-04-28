@@ -9,6 +9,7 @@
 #include <ncurses.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <errno.h>
 
 // board related functions
 #define N_ROWS 100
@@ -30,3 +31,9 @@ void draw_instructions();
 void draw_all();
 void draw_state(State* state);
 
+// network related functions
+int read_in(int, char*, int);
+void error(char*);
+int open_listener_socket();
+void bind_to_port(int, int);
+int say(int, char*);
