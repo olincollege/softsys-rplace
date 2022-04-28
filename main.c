@@ -1,6 +1,6 @@
 // Authors: Chris Allum, Berwin Lan, Maya Sivanandan
 
-# include "header.h"
+#include "header.h"
 
 
 int main(int argc, char *argv[])
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
             char *msg = "Hello from the server!\n";
             say(connect_d, msg);
 
-            chose(connect_d);
+            close(connect_d);
         }
 
         is_host = 1;
