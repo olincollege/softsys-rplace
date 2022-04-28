@@ -13,18 +13,34 @@ int main(int argc, char *argv[])
     if (argc == 2 && !strcmp(argv[1],"-host"))
     {
         puts("Running as Host");
+
         // do server setup things here
-        // Set up socket
+        // Open socket
         int listener_d = socket(PF_INET, SOCK_STREAM, 0);
         if (listener_d == -1)
             error("Can't open socket");
         
-        // Bind to a port
-        struct sockaddr_in name;
-        name.sin_family = PF_INET;
-        name.sin_port = (in_port_t)htons(30000);
-        name.sin_addr.s_addr = htonl(INADDR_ANY);
-        int c = bind (listener_d, (struct sockaddr *) &name, sizeof(name));
+        // Bind to port
+        bind_to_port(listener_d, 30000);
+
+        // Listen with a max queue of 3
+        if (listen(listener_d, 3) == -1)
+            error("Can't listen");
+
+        // Accept a connection
+        while (1) {
+            struct sockaddr_storage client_addr;
+            unsigned int address_size = sizeof(client_addr);
+            int connect_d = accept(listener_d, (struct sockaddr *)&client_addr, &address_size);
+            if (connect_d == -1)
+                error("Can't open secondary socket");
+
+            // Test send to client
+            char *msg = "Hello from the server!\n";
+            say(connect_d, msg);
+
+            chose(connect_d);
+        }
 
         is_host = 1;
     }
@@ -34,7 +50,7 @@ int main(int argc, char *argv[])
     {
         puts("Running as player");
         // do player join stuff here
-        // do fork
+        // do fork - looking at Beej's guide, I think the server forks? -BL
         is_host = 0;
     }
     else {
@@ -47,7 +63,6 @@ int main(int argc, char *argv[])
     if (is_host)
     {
         State* state = init();
-
 
     }
     else
