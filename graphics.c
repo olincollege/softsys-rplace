@@ -1,5 +1,5 @@
 #include "header.h"
-
+#define TEST_PAIR	1
 
 void init_screen()
 {
@@ -30,9 +30,18 @@ void draw_instructions()
 
 void draw_all()
 {
-    clear(); // clear screen
+    erase(); // clear screen
     
     draw_instructions();
+
+	start_color();
+	init_pair(1, COLOR_CYAN, COLOR_BLACK);
+	attron(COLOR_PAIR(TEST_PAIR));
+	mvaddch(2, 1, ACS_CKBOARD);
+	mvaddch(2, 3, ACS_BLOCK);
+	mvaddch(2, 5, ACS_BOARD);
+	mvaddch(2, 7, ACS_DIAMOND);
+	attroff(COLOR_PAIR(TEST_PAIR));
 
     refresh();
 }
