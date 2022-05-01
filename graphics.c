@@ -13,13 +13,13 @@ void init_screen()
 
     // setup color pairs
     start_color();
+	init_pair(1, COLOR_CYAN, COLOR_BLACK);
 
-
-    clear();   // empty screen
-	noecho();  // no text output
-	curs_set(0);  // cursor invisible
-	cbreak();  // no line buffering, pass every key pressed
-	keypad(stdscr, true);  // keypad enabled
+    clear();   				// empty screen
+	noecho();  				// no text output
+	curs_set(0);  			// cursor invisible
+	cbreak();  				// no line buffering, pass every key pressed
+	keypad(stdscr, true);  	// keypad enabled
 }
 
 void draw_instructions()
@@ -34,13 +34,9 @@ void draw_all()
     
     draw_instructions();
 
-	start_color();
-	init_pair(1, COLOR_CYAN, COLOR_BLACK);
 	attron(COLOR_PAIR(TEST_PAIR));
-	mvaddch(2, 1, ACS_CKBOARD);
-	mvaddch(2, 3, ACS_BLOCK);
-	mvaddch(2, 5, ACS_BOARD);
-	mvaddch(2, 7, ACS_DIAMOND);
+	mvaddch(2, 1, ACS_CKBOARD);		// representing pixel
+	mvaddch(2, 7, ACS_DIAMOND);		// representing player location
 	attroff(COLOR_PAIR(TEST_PAIR));
 
     refresh();
