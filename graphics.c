@@ -1,8 +1,6 @@
 #include "header.h"
 #define TEST_PAIR		0
 #define SELECTOR_PAIR	1
-#define X_INIT			0
-#define Y_INIT			0
 
 void init_screen()
 {
@@ -44,7 +42,9 @@ Player draw_all(int player_x, int player_y)
 
 	attron(COLOR_PAIR(SELECTOR_PAIR));
 	mvaddch(player_y, player_x, ACS_DIAMOND);	// representing player location
+	attroff(COLOR_PAIR(SELECTOR_PAIR));
 
+	// Update selector location
 	int ch;
 	ch = getch();
 	if (ch == KEY_LEFT)
@@ -55,8 +55,6 @@ Player draw_all(int player_x, int player_y)
 		player_y--;
 	if (ch == KEY_DOWN)
 		player_y++;
-	mvaddch(player_y, player_x, ACS_DIAMOND);
-	attroff(COLOR_PAIR(SELECTOR_PAIR));
 
     refresh();
 	return (Player){player_x, player_y};
