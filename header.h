@@ -17,19 +17,24 @@
 #define N_COLS 100
 
 // state of board, will add more to later
-typedef struct{
+typedef struct {
     int grid[N_ROWS][N_COLS];
     int current_x;
     int current_y;
     int current_color;
 } State;
 
+typedef struct {
+    int x_pos;
+    int y_pos;
+} Player;
+
 State* init();
 
 // graphics related functions
 void init_screen();
 void draw_instructions();
-void draw_all();
+Player draw_all();
 void draw_state(State* state);
 
 // network related functions

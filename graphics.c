@@ -1,5 +1,8 @@
 #include "header.h"
-#define TEST_PAIR	1
+#define TEST_PAIR		0
+#define SELECTOR_PAIR	1
+#define X_INIT			0
+#define Y_INIT			0
 
 void init_screen()
 {
@@ -13,7 +16,8 @@ void init_screen()
 
     // setup color pairs
     start_color();
-	init_pair(1, COLOR_CYAN, COLOR_BLACK);
+	init_pair(0, COLOR_CYAN, COLOR_BLACK);
+	init_pair(1, COLOR_WHITE, COLOR_CYAN);
 
     clear();   				// empty screen
 	noecho();  				// no text output
@@ -28,7 +32,7 @@ void draw_instructions()
 	mvprintw(1, 1, "CTRL+C: Quit");
 }
 
-void draw_all()
+Player draw_all(int player_x, int player_y)
 {
     erase(); // clear screen
     
@@ -36,10 +40,26 @@ void draw_all()
 
 	attron(COLOR_PAIR(TEST_PAIR));
 	mvaddch(2, 1, ACS_CKBOARD);		// representing pixel
-	mvaddch(2, 7, ACS_DIAMOND);		// representing player location
 	attroff(COLOR_PAIR(TEST_PAIR));
 
+	attron(COLOR_PAIR(SELECTOR_PAIR));
+	mvaddch(player_y, player_x, ACS_DIAMOND);	// representing player location
+
+	int ch;
+	ch = getch();
+	if (ch == KEY_LEFT)
+		player_x--;	
+	if (ch == KEY_RIGHT)
+		player_x++;
+	if (ch == KEY_UP)
+		player_y--;
+	if (ch == KEY_DOWN)
+		player_y++;
+	mvaddch(player_y, player_x, ACS_DIAMOND);
+	attroff(COLOR_PAIR(SELECTOR_PAIR));
+
     refresh();
+	return (Player){player_x, player_y};
 }
 
 void draw_state(State* state)

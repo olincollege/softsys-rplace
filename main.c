@@ -12,20 +12,20 @@ int main(int argc, char *argv[])
     // run as host
     if (argc == 2 && !strcmp(argv[1],"-host"))
     {
-        puts("Running as Host");
+        puts("Running as Host\n");
 
         // do server setup things here
         // Open socket
         int listener_d = socket(PF_INET, SOCK_STREAM, 0);
         if (listener_d == -1)
-            error("Can't open socket");
+            error("Can't open socket\n");
         
         // Bind to port
         bind_to_port(listener_d, 30000);
 
         // Listen with a max queue of 3
         if (listen(listener_d, 3) == -1)
-            error("Can't listen");
+            error("Can't listen\n");
 
         // Accept a connection
         while (1) {
@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
             unsigned int address_size = sizeof(client_addr);
             int connect_d = accept(listener_d, (struct sockaddr *)&client_addr, &address_size);
             if (connect_d == -1)
-                error("Can't open secondary socket");
+                error("Can't open secondary socket\n");
+            puts("Connection accepted!\n");
 
             // Test send to client
             char *msg = "Hello from the server!\n";
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
     // run as player
     else if (argc == 3 && !strcmp(argv[1],"-join"))
     {
-        puts("Running as player");
+        puts("Running as player\n");
         // do player join stuff here
         // do fork - looking at Beej's guide, I think the server forks? -BL
         is_host = 0;
@@ -73,8 +74,9 @@ int main(int argc, char *argv[])
     // draw state temporary place for testing stuff
     
     init_screen();
+    Player player = (Player){2, 2};
     for (;;){
-        draw_all();
+        player = draw_all(player.x_pos, player.y_pos);
     }
 
 }
