@@ -1,0 +1,48 @@
+Chris Notes
+
+------ General Achitecture
+I'm going to assume that one computer will serve as the host. From there, each other compuuter
+will connect to the host via a socket. The host will then send out board states
+
+------ How to run
+
+from two files
+
+
+./ server
+
+will create a brand new r/place instance. Will do nothing visually or allow input.
+
+./ client -IP
+
+
+will join the game created by the server. Can be run multiple times to initiate multiple clients on the server
+
+
+------ Notes on sending out game state via socket
+The goal is that on every game tick, the server will check for updates from the client ends. If the server 
+detects a change, it will push the change to its local representation of the game. From there, the server
+will push a whole bitmap represention of the game to each of the clients. 
+
+I estimate that it will take 
+roughly 3,000 bytes to represent the state of the game. I plan to encode each locaiton in the 100x100 board
+as a 3 byte segment of the byte buffer. the 3 bytes allow for encoding up to 8 values. This is convenient
+because ncurses only supports up to 8 colors. So each 3 byte segment encodes the state of that individual spot
+on the board.
+
+to create the buffer, I just need to ```malloc(3000)``` or something similar to that. The max size of a buffer
+that can be sent over a socket is close to a billion, so we are nowhere near the limit. If we wanted, we could 
+increase the board size by a lot.
+
+I will order the board in the following way 
+
+0       3       6       9  ...  297
+300     303     306     309 ... 597
+600     603     606     609 ... 897
+...     ...     ...     ...     ...
+...     ...     ...     ...     ...
+2400    2403    2406    2409    2697
+2700    2703    2706    2709 .. 2997
+
+
+

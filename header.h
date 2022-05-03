@@ -11,31 +11,36 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <errno.h>
+#include <signal.h>
 
 // board related functions
-#define N_ROWS 100
-#define N_COLS 100
+#define N_ROWS 50
+#define N_COLS 50
 
-// state of board, will add more to later
+// State of the Game from the server end
+typedef struct {
+    int n_player;
+    int grid[N_ROWS][N_COLS];
+} GameState;
+
+// State of the game from the client end
 typedef struct {
     int grid[N_ROWS][N_COLS];
-    int current_x;
-    int current_y;
-    int current_color;
-} State;
+    int loc_x;
+    int loc_y;
+    int color;
+} PlayerState;
 
-typedef struct {
-    int x_pos;
-    int y_pos;
-} Player;
-
-State* init();
+GameState* init_game();
 
 // graphics related functions
 void init_screen();
 void draw_instructions();
-Player draw_all();
-void draw_state(State* state);
+void draw_grid(int x_start, int y_start);
+
+//Player draw_all();
+void draw_all();
+// void draw_state(State* state);
 
 // network related functions
 int read_in(int, char*, int);

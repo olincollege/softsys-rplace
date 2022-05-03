@@ -1,9 +1,9 @@
 #include "header.h"
 
 
-State* init(){
-    State* state = malloc(sizeof(State));
-    memset(state->grid, 0, sizeof(state->grid));
-    return state;
+GameState* init_game(){
+    GameState* game_state = malloc(sizeof(GameState));
+    memset(game_state->grid, 0, sizeof(game_state->grid));
+    return game_state;
 }
 
