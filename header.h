@@ -51,7 +51,7 @@ GameState* init_game();
 void init_screen();
 void init_colors();
 void draw_instructions();
-void draw_grid(int x_start, int y_start);
+void draw_grid(int, int);
 void draw_palette();
 
 //Player draw_all();
