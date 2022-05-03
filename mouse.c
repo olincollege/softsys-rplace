@@ -10,9 +10,6 @@
 
 #include "header.h"
 
-#define SELECTED_PAIR 0
-#define HOVER_PAIR    1
-
 int main()
 {
   initscr();

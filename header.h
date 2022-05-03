@@ -18,6 +18,19 @@
 #define N_ROWS 60
 #define N_COLS 250
 
+// color definitions
+#define RED         0
+#define YELLOW      1
+#define GREEN       2
+#define CYAN        3
+#define BLUE        4
+#define MAGENTA     5
+#define WHITE       6
+#define BLACK       7
+
+#define SELECTED_PAIR 10
+#define HOVER_PAIR    11
+
 // State of the Game from the server end
 typedef struct {
     int n_player;
@@ -36,8 +49,10 @@ GameState* init_game();
 
 // graphics related functions
 void init_screen();
+void init_colors();
 void draw_instructions();
 void draw_grid(int x_start, int y_start);
+void draw_palette();
 
 //Player draw_all();
 void draw_all();
