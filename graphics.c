@@ -20,7 +20,7 @@ void init_screen()
 
     clear();   				// empty screen
 	noecho();  				// no text output
-	curs_set(0);  			// cursor invisible
+	curs_set(1);  			// cursor invisible
 	cbreak();  				// no line buffering, pass every key pressed
 	keypad(stdscr, true);  	// keypad enabled
 }
@@ -31,6 +31,8 @@ void draw_instructions()
 	mvprintw(1, 1, "CTRL+C: Quit");
 }
 
+
+// good for now, will need to be fixed later to account for color later
 void draw_grid(int x_start, int y_start)
 {
 	for (int row = 0; row < N_ROWS; row ++){
@@ -71,7 +73,8 @@ void draw_grid(int x_start, int y_start)
 // }
 
 void draw_all(){
-	//clear();
+	erase();
+
 	int x_start = (COLS - N_COLS) / 2; // adjust start x and y to center board
     int y_start = (LINES - N_ROWS )/ 2;
 

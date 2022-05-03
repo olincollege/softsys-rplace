@@ -14,8 +14,8 @@
 #include <signal.h>
 
 // board related functions
-#define N_ROWS 50
-#define N_COLS 50
+#define N_ROWS 60
+#define N_COLS 250
 
 // State of the Game from the server end
 typedef struct {

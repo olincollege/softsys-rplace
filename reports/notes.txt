@@ -30,7 +30,7 @@ as a 3 byte segment of the byte buffer. the 3 bytes allow for encoding up to 8 v
 because ncurses only supports up to 8 colors. So each 3 byte segment encodes the state of that individual spot
 on the board.
 
-to create the buffer, I just need to ```malloc(3000)``` or something similar to that. The max size of a buffer
+to create the buffer, I just need to ```malloc(45000)``` or something similar to that. The max size of a buffer
 that can be sent over a socket is close to a billion, so we are nowhere near the limit. If we wanted, we could 
 increase the board size by a lot.
 
