@@ -42,6 +42,12 @@ void draw_grid(int x_start, int y_start)
 	}
 }
 
+
+
+
+
+
+
 // Player draw_all(int player_x, int player_y)
 // {
 //     erase(); // clear screen
@@ -72,6 +78,18 @@ void draw_grid(int x_start, int y_start)
 // 	return (Player){player_x, player_y};
 // }
 
+
+
+
+
+
+
+
+// KEEP AS VOID FUNC!!!!
+// NOTHING SHOULD BE CALCULTED IN THIS FILE!!!
+// ONLY THING THAT GETS PASSED AROUND ARE THE ESENTIALS FOR DRAWING
+// KEEP THE DRAW ALL FILE AS ONLY FOR DRAWING A BUNCH OF SMALL ITEMS
+// IN THE SUB FUNCITONS, ONLY PASS AROUND X_START, Y_START, AND PLAYERSTATE STRUCT
 void draw_all(){
 	erase();
 
@@ -81,5 +99,6 @@ void draw_all(){
 
 	draw_instructions();
 	draw_grid(x_start, y_start);
+
 	refresh();
 }
