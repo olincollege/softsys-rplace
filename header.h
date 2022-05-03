@@ -6,6 +6,7 @@
 #include <string.h>
 
 // Non-Standard C libraries
+#include <curses.h>
 #include <ncurses.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
