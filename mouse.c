@@ -10,7 +10,8 @@
 
 #include "header.h"
 
-#define SELECTOR_PAIR	1
+#define SELECTED_PAIR 0
+#define HOVER_PAIR    1
 
 int main()
 {
@@ -43,12 +44,20 @@ int main()
     else if (c == KEY_MOUSE) {
       MEVENT event;
       if (getmouse(&event) == OK) {
-        // snprintf(buffer, max_size, "Mouse at row=%d, column=%d bstate=0x%08lx",
-        //          event.y, event.x, event.bstate);
-        erase();
-        attron(COLOR_PAIR(SELECTOR_PAIR));
-        mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
-        attroff(COLOR_PAIR(SELECTOR_PAIR));
+        erase();      // you can comment this out to make sure the below code is working
+
+        // If hovering
+        if (event.bstate == 0x10000000) {
+          attron(COLOR_PAIR(HOVER_PAIR));
+          mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
+          attroff(COLOR_PAIR(HOVER_PAIR));
+        } 
+        // If double-click
+        if (event.bstate == 0x00000008) {
+          attron(COLOR_PAIR(SELECTED_PAIR));
+          mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
+          attroff(COLOR_PAIR(SELECTED_PAIR));
+        }
         refresh();
       }
       else {
