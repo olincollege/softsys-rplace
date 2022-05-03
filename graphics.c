@@ -22,7 +22,7 @@ void init_colors() {
 		exit(1);
 	}
 
-    // setup color pairs
+    // set up color pairs
     start_color();
 	init_pair(0, COLOR_RED, COLOR_RED);
 	init_pair(1, COLOR_YELLOW, COLOR_YELLOW);
@@ -82,48 +82,6 @@ void draw_palette() {
 }
 
 
-
-
-
-
-
-// Player draw_all(int player_x, int player_y)
-// {
-//     erase(); // clear screen
-    
-//     draw_instructions();
-
-// 	attron(COLOR_PAIR(TEST_PAIR));
-// 	mvaddch(2, 1, ACS_CKBOARD);		// representing pixel
-// 	attroff(COLOR_PAIR(TEST_PAIR));
-
-// 	attron(COLOR_PAIR(SELECTOR_PAIR));
-// 	mvaddch(player_y, player_x, ACS_DIAMOND);	// representing player location
-// 	attroff(COLOR_PAIR(SELECTOR_PAIR));
-
-// 	// Update selector location
-// 	int ch;
-// 	ch = getch();
-// 	if (ch == KEY_LEFT)
-// 		player_x--;	
-// 	if (ch == KEY_RIGHT)
-// 		player_x++;
-// 	if (ch == KEY_UP)
-// 		player_y--;
-// 	if (ch == KEY_DOWN)
-// 		player_y++;
-
-//     refresh();
-// 	return (Player){player_x, player_y};
-// }
-
-
-
-
-
-
-
-
 // KEEP AS VOID FUNC!!!!
 // NOTHING SHOULD BE CALCULATED IN THIS FILE!!!
 // ONLY THING THAT GETS PASSED AROUND ARE THE ESSENTIALS FOR DRAWING
@@ -134,7 +92,6 @@ void draw_all() {
 
 	int x_start = (COLS - N_COLS) / 2; // adjust start x and y to center board
     int y_start = (LINES - N_ROWS ) / 2;
-
 
 	draw_grid(x_start, y_start);
 	draw_instructions();
