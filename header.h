@@ -64,3 +64,8 @@ void error(char*);
 int open_listener_socket();
 void bind_to_port(int, int);
 int say(int, char*);
+
+
+
+int catch_signal(int sig, void (*handler) (int));
+void end_game(int sig);
