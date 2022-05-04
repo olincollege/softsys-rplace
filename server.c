@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	}
 		
 	// create a master socket
-	if( (master_socket = socket(PF_INET, SOCK_STREAM, 0)) == 0)
+	if( (master_socket = socket(AF_INET, SOCK_STREAM, 0)) == 0)
 	{
 		perror("socket failed");
 		exit(EXIT_FAILURE);
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	}
 	
 	// type of socket created
-	address.sin_family = PF_INET;
+	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = htonl(INADDR_ANY);
 	address.sin_port = (in_port_t)htons(PORT);
 		
