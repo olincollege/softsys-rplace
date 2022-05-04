@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
             //  puts("Welcome message sent successfully");
 
             // Send board state to new client
-            if( send(new_socket, game_state, size(game_state), 0) != strlen(game_state) )
+            if( send(new_socket, game_state, sizeof(game_state), 0) != sizeof(game_state) )
 			{
 				perror("send");
 			}

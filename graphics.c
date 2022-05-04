@@ -72,8 +72,8 @@ void draw_palette(int x_start, int y_start) {
 	int pallette_width = N_COLS/8;
 
 	for (int i = 2; i < 9; i ++){
-		int x = 
-		rectangle(row, y_start + N_ROWS + 1, pallette_width, 5, RED);
+		int x = x_start + i * pallette_width;
+		rectangle(x, y_start + N_ROWS + 1, pallette_width, 5, RED);
 
 	}
 
