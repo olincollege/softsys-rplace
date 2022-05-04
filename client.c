@@ -36,40 +36,22 @@ int main(int argc, char *argv[]) {
 	int (game_state)[N_ROWS][N_COLS];
     recv(server_sock, *game_state, (sizeof(game_state)), 0);
 
-	for (int i = 0 ; i < N_ROWS ; i++){
-		int hold = 0;
-		for (int j = 0 ; j < N_COLS ; j++){
-			printf("%d ", game_state[i][j]);
-			hold ++;
-		}
-		printf("\n Last Col %d\n", hold);
-		printf("\n End of row %d\n", i+1);
-	}
-
     // game_state into draw command
 	
 	// keep communicating with server
 	for (;;)
 	{
-		printf("Enter message: ");
-		scanf("%s", message);
+
+		//Set up buffer hold of mouse click location and color choice
+
+		// if (enter pressed)
+			//send(server_sock, *pixel_array_out, sizeof(pixel_array_out), 0);
+			// Fork to semaphore/mutex to stop sending but keep receiving for 1 min
+
+		// Receive change from server and update
+		//recv(server_sock, *pixel_array_in, sizeof(pixel_array_in), 0);
+		//game_state[pixelarray_in[0]][pixelarray_in[1]] = [pixelarray_in[2]];
 		
-		// Send some data
-		if(send(server_sock, message, strlen(message), 0) < 0)
-		{
-			puts("Send failed");
-			return 1;
-		}
-		
-		// Receive a reply from the server
-		if( recv(server_sock, server_reply, 2000, 0) < 0)
-		{
-			puts("recv failed");
-			break;
-		}
-		
-		puts("Server reply: ");
-		puts(server_reply);
 	}
 	
 	close(server_sock);

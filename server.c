@@ -42,15 +42,8 @@ int main(int argc, char *argv[])
 	fd_set readfds;
 		
     // create a new instance of the game
-    int game_state[N_ROWS][N_COLS] = {0};
+    int game_state[N_ROWS][N_COLS/2] = {0};
     
-	for (int a = 0 ; a < N_ROWS ; a++){
-		for (int j = 0 ; j < N_COLS ; j++){
-			game_state[a][j] = 1;
-			printf("%d ", game_state[a][j]);
-		}
-		printf("\n End of row %d\n", a+1);
-	}
 
 	
 	// initialise all client_socket[] to 0 so not checked
