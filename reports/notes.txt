@@ -45,4 +45,10 @@ I will order the board in the following way
 2700    2703    2706    2709 .. 2997
 
 
-
+------ Notes on mouse
+It'll return an event, which breaks down into:
+    event.y         --> row
+    event.x         --> column
+    event.bstate    --> 0x10000000 for hover
+                        0x00000004 for single click
+                        0x00000008 for double click
