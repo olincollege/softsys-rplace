@@ -100,8 +100,22 @@ void draw_palette(int x_start, int y_start) {
 	}
 }
 
-void draw_cursor(int x, int y) {
-	rectangle(x, y, 3, 3, RED);
+void draw_cursor(int start_x, int start_y, int mouse_loc[2]) {
+	
+	int x = (int) mouse_loc[0];
+	int y = (int) mouse_loc[1];
+	
+
+	if (start_x <= x && x < start_x + N_COLS -1){
+		if (start_y <= y && y < start_y + N_ROWS){
+			// find the box that it is in
+			int box_x = floor(x/2)*2 + start_x%2;
+			rectangle(box_x,y,2,1,RED);
+			mvprintw(2, 1, "X Coordinate: %d\n", (box_x - start_x)/2);
+			mvprintw(3, 1, "Y Coordinate: %d\n", y - start_y);
+
+		}
+	}
 }
 
 
@@ -111,7 +125,7 @@ void draw_cursor(int x, int y) {
 // ONLY THING THAT GETS PASSED AROUND ARE THE ESSENTIALS FOR DRAWING
 // KEEP THE DRAW ALL FILE AS ONLY FOR DRAWING A BUNCH OF SMALL ITEMS
 // IN THE SUB FUNCITONS, ONLY PASS AROUND X_START, Y_START, AND PLAYERSTATE STRUCT
-void draw_all(int mouse_x, int mouse_y) {
+void draw_all(int mouse_loc[2]) {
 	erase();
 
 	int x_start = (COLS - N_COLS) / 2; // adjust start x and y to center board
@@ -121,6 +135,7 @@ void draw_all(int mouse_x, int mouse_y) {
 	draw_instructions();
 	draw_palette(x_start, y_start);
 
+	
+	draw_cursor(x_start, y_start, mouse_loc);
 	refresh();
-	draw_cursor(mouse_x, mouse_y);
 }

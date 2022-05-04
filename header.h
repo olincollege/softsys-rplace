@@ -6,6 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <math.h>
 
 // Non-Standard C libraries
 #include <curses.h>
@@ -19,10 +20,11 @@
 #include <netinet/in.h>
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
 
+#define PORT 9999
 
 // board related functions
 #define N_ROWS 60
-#define N_COLS 250
+#define N_COLS 200
 
 // color definitions
 #define WHITE       1
@@ -56,7 +58,7 @@ void draw_grid(int, int);
 void draw_palette();
 
 //Player draw_all();
-void draw_all(int mouse_x, int mouse_y); 
+void draw_all(int mouse_loc[2]);
 // void draw_state(State* state);
 
 // network related functions
@@ -99,3 +101,5 @@ void end_game(int sig);
 
 void init_mouse();
 void get_mouse_loc(int* loc);
+
+void get_grid_loc(int mouse_loc[2], int grid_loc[2]);
