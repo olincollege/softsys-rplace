@@ -14,11 +14,13 @@ int catch_signal(int sig, void (*handler) (int)) {
 
 void end_game(int sig)
 {   
+    printf("\033[?1003l\n"); // Disable mouse movement events, as l = low
     endwin();
     // system("xdotool key Ctrl+parenright");
     system("xdotool key Ctrl+plus");
     system("xdotool key Ctrl+plus");
     system("resize -s 24 80 > /dev/null");
+    system("reset");
     
     exit(EXIT_SUCCESS);
 }

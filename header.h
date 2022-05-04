@@ -52,8 +52,10 @@ typedef struct {
 GameState* init_game();
 
 // graphics related functions
+void init_all();
 void init_screen();
 void init_colors();
+void init_mouse();
 void draw_instructions();
 void draw_grid(int, int);
 void draw_palette();

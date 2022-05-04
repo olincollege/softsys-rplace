@@ -10,74 +10,57 @@
 
 #include "header.h"
 
-int main()
-{
-  initscr();
-  cbreak();
-  noecho();
-  init_screen();
+// Function to return a MEVENT with mouse attributes.
+MEVENT mouse() {
+  int c = wgetch(stdscr);
 
-  // Enables keypad mode. This makes (at least for me) mouse events getting
-  // reported as KEY_MOUSE, instead as of random letters.
-  keypad(stdscr, TRUE);
-
-  // Don't mask any mouse events
-  mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
-
-  printf("\033[?1003h\n"); // Makes the terminal report mouse movement events
-
-  for (;;) { 
-    int c = wgetch(stdscr);
- 
-    // Exit the program on new line fed
-    if (c == '\n')
-      break;
- 
-    char buffer[512];
-    size_t max_size = sizeof(buffer);
-    if (c == ERR) {
-      snprintf(buffer, max_size, "Nothing happened.");
-    }
-    else if (c == KEY_MOUSE) {
-      MEVENT event;
-      if (getmouse(&event) == OK) {
-        erase();      // you can comment this out to make sure the below code is working
-
-        // If hovering
-        if (event.bstate == 0x10000000) {
-          attron(COLOR_PAIR(HOVER_PAIR));
-          mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
-          attroff(COLOR_PAIR(HOVER_PAIR));
-        } 
-        // If double-click
-        if (event.bstate == 0x00000008) {
-          attron(COLOR_PAIR(SELECTED_PAIR));
-          mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
-          attroff(COLOR_PAIR(SELECTED_PAIR));
-        }
-        refresh();
-      }
-      else {
-        snprintf(buffer, max_size, "Got bad mouse event.");
-      }
+  char buffer[512];
+  size_t max_size = sizeof(buffer);
+  if (c == ERR) {
+    snprintf(buffer, max_size, "Nothing happened.");
+  }
+  else if (c == KEY_MOUSE) {
+    MEVENT event;
+    if (getmouse(&event) == OK) {
+      return event;
     }
     else {
-      snprintf(buffer, max_size, "Pressed key %d (%s)", c, keyname(c));      
+      snprintf(buffer, max_size, "Got bad mouse event.");
     }
- 
-    move(0, 0);
-    insertln();
-    addstr(buffer);
-    clrtoeol();
-    move(0, 0);
   }
- 
-  printf("\033[?1003l\n"); // Disable mouse movement events, as l = low
+  else {
+    snprintf(buffer, max_size, "Pressed key %d (%s)", c, keyname(c));      
+  }
 
-  
-  endwin();
+  move(0, 0);
+  insertln();
+  addstr(buffer);
+  clrtoeol();
+  move(0, 0);
+}
 
-  system("reset");
- 
-  return 0;
+// Sample code for how this could be integrated.
+// The important part is in the for loop
+void main() {
+  init_all();
+
+  for (;;) {
+    MEVENT event = mouse();
+
+    erase();      // you can comment this out to make sure the below code is working
+
+    // If hovering
+    if (event.bstate == 0x10000000) {
+      attron(COLOR_PAIR(HOVER_PAIR));
+      mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
+      attroff(COLOR_PAIR(HOVER_PAIR));
+    } 
+    // If double-click
+    if (event.bstate == 0x00000008) {
+      attron(COLOR_PAIR(SELECTED_PAIR));
+      mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
+      attroff(COLOR_PAIR(SELECTED_PAIR));
+    }
+    refresh();
+  }
 }
