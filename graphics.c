@@ -100,6 +100,10 @@ void draw_palette(int x_start, int y_start) {
 	}
 }
 
+void draw_cursor(int x, int y) {
+	rectangle(x, y, 3, 3, RED);
+}
+
 
 
 // KEEP AS VOID FUNC!!!!
@@ -107,7 +111,7 @@ void draw_palette(int x_start, int y_start) {
 // ONLY THING THAT GETS PASSED AROUND ARE THE ESSENTIALS FOR DRAWING
 // KEEP THE DRAW ALL FILE AS ONLY FOR DRAWING A BUNCH OF SMALL ITEMS
 // IN THE SUB FUNCITONS, ONLY PASS AROUND X_START, Y_START, AND PLAYERSTATE STRUCT
-void draw_all() {
+void draw_all(int mouse_x, int mouse_y) {
 	erase();
 
 	int x_start = (COLS - N_COLS) / 2; // adjust start x and y to center board
@@ -118,4 +122,5 @@ void draw_all() {
 	draw_palette(x_start, y_start);
 
 	refresh();
+	draw_cursor(mouse_x, mouse_y);
 }

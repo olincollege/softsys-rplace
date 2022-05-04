@@ -56,7 +56,7 @@ void draw_grid(int, int);
 void draw_palette();
 
 //Player draw_all();
-void draw_all();
+void draw_all(int mouse_x, int mouse_y); 
 // void draw_state(State* state);
 
 // network related functions

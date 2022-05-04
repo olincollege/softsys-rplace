@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
 
         
 
-        draw_all();
+        //draw_all();
 
 
 

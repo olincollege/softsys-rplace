@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
 
+
 #include "header.h"
 
 #define PORT 9999
@@ -29,6 +30,8 @@ void end_game(int sig)
     system("xdotool key Ctrl+plus");
     system("xdotool key Ctrl+plus");
     system("resize -s 24 80 > /dev/null");
+
+    system("reset");
     
     exit(EXIT_SUCCESS);
 }
@@ -49,25 +52,19 @@ int main(int argc, char *argv[])
     init_mouse();
 
 
+    int mouse_loc[2];
+
     for (;;){
         // check for read data
 
         
 
-        draw_all();
         
-        // ch = wgetch(stdscr);
-        int mouse_loc[2];
+
         get_mouse_loc(mouse_loc);
-        printf("%d",mouse_loc[0]);
-
-
+        draw_all(mouse_loc[0], mouse_loc[1]);
 
         
-
-
-
-
 
 
 

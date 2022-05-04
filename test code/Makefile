@@ -1,3 +1,2 @@
-main.c
-    gcc main.c -o main
-
+test_mouse.c:
+    gcc test_mouse.c -o test_mouse -lncurses

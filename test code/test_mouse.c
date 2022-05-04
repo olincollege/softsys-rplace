@@ -33,59 +33,49 @@ void end_game(int sig)
     
     exit(EXIT_SUCCESS);
 }
+
+
+void get_mouse_loc(int* loc)
+{
+    int c = getch();
+    MEVENT event;
+    if (c == KEY_MOUSE) {
+      if (getmouse(&event) == OK) {
+        loc[0] = event.x;
+        loc[1] = event.y;
+      }
+    }   
+}
  
 int main()
 {
     catch_signal(SIGINT, end_game);
-  initscr();
-  cbreak();
-  noecho();
+    initscr();
+    cbreak();
+    noecho();
 
-  // Enables keypad mode. This makes (at least for me) mouse events getting
-  // reported as KEY_MOUSE, instead as of random letters.
-  keypad(stdscr, TRUE);
+    // Enables keypad mode. This makes (at least for me) mouse events getting
+    // reported as KEY_MOUSE, instead as of random letters.
+    keypad(stdscr, TRUE);
 
-  // Don't mask any mouse events
-  mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
+    // Don't mask any mouse events
+    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
-  printf("\033[?1003h\n"); // Makes the terminal report mouse movement events
+    printf("\033[?1003h\n"); // Makes the terminal report mouse movement events
 
-  for (;;) { 
-    int c = wgetch(stdscr);
- 
-    // Exit the program on new line fed
-    if (c == '\n')
-      break;
- 
-    char buffer[512];
-    size_t max_size = sizeof(buffer);
-    if (c == ERR) {
-      snprintf(buffer, max_size, "Nothing happened.");
+    int test[2];
+    for (;;) { 
+        get_mouse_loc(test);
+        printf("%d\n",test[0]);
+        printf("%d\n",test[1]);
+
     }
-    else if (c == KEY_MOUSE) {
-      MEVENT event;
-      if (getmouse(&event) == OK) {
-        snprintf(buffer, max_size, "Mouse at row=%d, column=%d bstate=0x%08lx",
-                 event.y, event.x, event.bstate);
-      }
-      else {
-        snprintf(buffer, max_size, "Got bad mouse event.");
-      }
-    }
-    else {
-      snprintf(buffer, max_size, "Pressed key %d (%s)", c, keyname(c));      
-    }
- 
-    move(0, 0);
-    insertln();
-    addstr(buffer);
-    clrtoeol();
-    move(0, 0);
-  }
- 
-  printf("\033[?1003l\n"); // Disable mouse movement events, as l = low
+    
+    printf("\033[?1003l\n"); // Disable mouse movement events, as l = low
 
-  endwin();
- 
-  return 0;
+    endwin();
+    
+    return 0;
 }
+
+
