@@ -42,10 +42,11 @@ int main(int argc, char *argv[])
 	fd_set readfds;
 		
     // create a new instance of the game
-    int game_state[63][N_COLS] = {0};
+    int game_state[N_ROWS][N_COLS] = {0};
     
-	for (int a = 0 ; a < 63 ; a++){
+	for (int a = 0 ; a < N_ROWS ; a++){
 		for (int j = 0 ; j < N_COLS ; j++){
+			game_state[a][j] = 1;
 			printf("%d ", game_state[a][j]);
 		}
 		printf("\n End of row %d\n", a+1);
@@ -147,7 +148,7 @@ int main(int argc, char *argv[])
 		
 
             // Send board state to new client
-            if( send(new_socket, game_state, (sizeof(game_state))*5, 0) != sizeof(game_state) )
+            if( send(new_socket, *game_state, (sizeof(game_state)), 0) != sizeof(game_state) )
 			{
 				perror("send");
 			}

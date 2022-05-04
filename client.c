@@ -31,13 +31,18 @@ int main(int argc, char *argv[]) {
 	
 	puts("Connected\n");
     // open the game terminal/board here?
-	int game_state[63][N_COLS];
-    recv(server_sock, game_state, (sizeof(game_state))*5, 0);
+	
+	
+	int (game_state)[N_ROWS][N_COLS];
+    recv(server_sock, *game_state, (sizeof(game_state)), 0);
 
-	for (int i = 0 ; i < 63 ; i++){
+	for (int i = 0 ; i < N_ROWS ; i++){
+		int hold = 0;
 		for (int j = 0 ; j < N_COLS ; j++){
 			printf("%d ", game_state[i][j]);
+			hold ++;
 		}
+		printf("\n Last Col %d\n", hold);
 		printf("\n End of row %d\n", i+1);
 	}
 
