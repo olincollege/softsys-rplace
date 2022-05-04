@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	fd_set readfds;
 		
     // create a new instance of the game
-    GameState* game_state = init_game();
+    int game_state[N_ROWS][N_COLS] = {0};
     
 	
 	// initialise all client_socket[] to 0 so not checked
