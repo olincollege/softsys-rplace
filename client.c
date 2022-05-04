@@ -87,6 +87,7 @@ int main(int argc, char *argv[]) {
 		printf("Could not create socket");
 	}
 	puts("Socket created");
+
 	
 	// type of socket created
     address.sin_addr.s_addr = inet_addr(argv[1]);
@@ -99,6 +100,10 @@ int main(int argc, char *argv[]) {
 		perror("connect failed. Error");
 		return 1;
 	}
+
+    int status = fcntl(server_sock, F_SETFL, fcntl(server_sock, F_GETFL, 0) | O_NONBLOCK);
+    if (status == -1)
+        puts("error calling fcntl");
 	
 	puts("Connected\n");
     // open the game terminal/board here?

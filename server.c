@@ -4,6 +4,9 @@
 
 #define PORT 9999
 
+#define _GNU_SOURCE
+#include <sys/socket.h>
+
 int main(int argc, char *argv[])
 {
     // do initialization stuff for network here 
@@ -40,6 +43,10 @@ int main(int argc, char *argv[])
 		perror("socket failed");
 		exit(EXIT_FAILURE);
 	}
+
+	int status = fcntl(master_socket, F_SETFL, fcntl(master_socket, F_GETFL, 0) | O_NONBLOCK);
+    if (status == -1)
+        perror("error calling fcntl");
 	
 	// set master socket to allow multiple connections
 	if( setsockopt(master_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&opt,
@@ -68,6 +75,8 @@ int main(int argc, char *argv[])
 		perror("listen");
 		exit(EXIT_FAILURE);
 	}
+
+
 		
 	// accept the incoming connection
 	addrlen = sizeof(address);
@@ -109,8 +118,7 @@ int main(int argc, char *argv[])
 		// then its an incoming connection
 		if (FD_ISSET(master_socket, &readfds))
 		{
-			if ((new_socket = accept(master_socket,
-					(struct sockaddr *)&address, (socklen_t*)&addrlen))<0)
+			if (new_socket = accept(master_socket,(struct sockaddr *)&address, (socklen_t*)&addrlen)<0)
 			{
 				perror("accept");
 				exit(EXIT_FAILURE);
