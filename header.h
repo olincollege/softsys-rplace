@@ -19,8 +19,10 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
+#include <fcntl.h>
 
 #define PORT 9999
+
 
 // board related functions
 #define N_ROWS 30 //50
