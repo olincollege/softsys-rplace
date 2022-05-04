@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
 	fd_set readfds;
 		
     // create a new instance of the game
+    int game_state[N_ROWS][N_COLS] = {0};
     
 	
 	//initialise all client_socket[] to 0 so not checked
@@ -140,7 +141,7 @@ int main(int argc, char *argv[])
 		
 
             // Send board state to new client
-            if( send(new_socket, game_state, sizeof(game_state), 0) != sizeof(game_state) )
+            if( send(new_socket, game_state, (sizeof(game_state))*4, 0) != sizeof(game_state) )
 			{
 				perror("send");
 			}
