@@ -14,11 +14,10 @@ void init_mouse()
 }
 
 
-void get_mouse_loc(int* loc)
+void get_mouse_loc(int ch, int* loc)
 {
-    int c = getch();
     MEVENT event;
-    if (c == KEY_MOUSE) {
+    if (ch == KEY_MOUSE) {
       if (getmouse(&event) == OK) {
         loc[0] = event.x;
         loc[1] = event.y;

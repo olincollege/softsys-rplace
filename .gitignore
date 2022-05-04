@@ -53,3 +53,7 @@ dkms.conf
 
 # Compiled files
 main
+client
+server
+graphics_test
+mouse

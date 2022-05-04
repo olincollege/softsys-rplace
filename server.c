@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
 		
     // create a new instance of the game
     int game_state[N_ROWS][N_COLS/2] = {0};
+
+	game_state[10][10] = 3;
     
 
 	
@@ -158,8 +160,9 @@ int main(int argc, char *argv[])
 					
 				//Receive pixel change and send out to all clients
 				else {
-					int pixel_array_out[3];
-					recv(input_socket, pixel_array_out, (sizeof(pixel_array_out)), 0);
+					int (pixel_array_out)[3];
+					recv(input_socket, pixel_array_out, sizeof(pixel_array_out), 0);
+					game_state[pixel_array_out[0]][pixel_array_out[1]] = pixel_array_out[2];
 					for (i = 0; i < max_clients; i++) {
 						send(client_socket[i], pixel_array_out, (sizeof(pixel_array_out)), 0);
 					}

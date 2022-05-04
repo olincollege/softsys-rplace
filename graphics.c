@@ -55,19 +55,26 @@ void draw_instructions()
 {
 	mvprintw(0, 1, "Welcome to Terminal r/place simulations");
 	mvprintw(1, 1, "CTRL+C: Quit");
+	mvprintw(2, 1, "Use Left and Right arrow to select color");
+
 }
 
 
 // good for now, will need to be fixed later to account for color later
-void draw_grid(int x_start, int y_start)
+void draw_grid(int x_start, int y_start, PlayerState* player_state)
 {
-	attron(COLOR_PAIR(WHITE));
+	
+	int color;
+	
 	for (int row = 0; row < N_ROWS; row ++){
 		for (int col = 0; col < N_COLS; col ++){
+			color = player_state->grid[row][col/2];
+			attron(COLOR_PAIR(color));
 			mvaddch(y_start + row, x_start + col, ACS_CKBOARD);
+			attroff(COLOR_PAIR(color));
 		}
 	}
-	attroff(COLOR_PAIR(WHITE));
+	
 }
 
 
@@ -84,7 +91,7 @@ void rectangle(int x_start, int y_start, int width, int height, int color)
 }
 
 
-void draw_palette(int x_start, int y_start) {
+void draw_palette(int x_start, int y_start, PlayerState * game_state) {
 
 	int palette_height = 5;
 	int palette_width = 16;
@@ -97,27 +104,33 @@ void draw_palette(int x_start, int y_start) {
 		int x1 = x + 1 + palette_width*i;
 		int y1 = y_start + N_ROWS + 1;
 		rectangle(x1, y1, palette_width - 4, palette_height, i);
+		
+		if (game_state->color == i)
+			rectangle(x1, y1 + palette_height + 1, palette_width - 4, 1, i);
 	}
 }
 
-void draw_cursor(int start_x, int start_y, int mouse_loc[2]) {
-	
-	int x = (int) mouse_loc[0];
-	int y = (int) mouse_loc[1];
-	
+void draw_cursor(int start_x, int start_y, PlayerState * game_state) {
 
-	if (start_x <= x && x < start_x + N_COLS -1){
-		if (start_y <= y && y < start_y + N_ROWS){
-			// find the box that it is in
-			int box_x = floor(x/2)*2 + start_x%2;
-			rectangle(box_x,y,2,1,RED);
-			mvprintw(2, 1, "X Coordinate: %d\n", (box_x - start_x)/2);
-			mvprintw(3, 1, "Y Coordinate: %d\n", y - start_y);
+	int grid_x = game_state->loc_x;
+	int grid_y = game_state->loc_y;
+	int color = game_state->color;
 
-		}
+	
+	if (grid_x != -1 && grid_y != -1){
+		mvprintw(3, 1, "X Coordinate: %d\n", grid_x);
+		mvprintw(4, 1, "Y Coordinate: %d\n", grid_y);
+		rectangle(grid_x*2 + start_x, grid_y + start_y, 2, 1, color);
+
 	}
+
 }
 
+void draw_locked(PlayerState * game_state){
+	if (game_state->locked)
+		mvprintw(5, 1, "LOCKED");
+
+}
 
 
 // KEEP AS VOID FUNC!!!!
@@ -125,17 +138,21 @@ void draw_cursor(int start_x, int start_y, int mouse_loc[2]) {
 // ONLY THING THAT GETS PASSED AROUND ARE THE ESSENTIALS FOR DRAWING
 // KEEP THE DRAW ALL FILE AS ONLY FOR DRAWING A BUNCH OF SMALL ITEMS
 // IN THE SUB FUNCITONS, ONLY PASS AROUND X_START, Y_START, AND PLAYERSTATE STRUCT
-void draw_all(int mouse_loc[2]) {
+void draw_all(PlayerState * game_state) 
+{
 	erase();
 
 	int x_start = (COLS - N_COLS) / 2; // adjust start x and y to center board
     int y_start = (LINES - N_ROWS ) / 2;
 
-	draw_grid(x_start, y_start);
+	draw_grid(x_start, y_start, game_state);
 	draw_instructions();
-	draw_palette(x_start, y_start);
+	draw_palette(x_start, y_start, game_state);
 
-	
-	draw_cursor(x_start, y_start, mouse_loc);
+
+	draw_cursor(x_start, y_start, game_state);
+
+	draw_locked(game_state);
+
 	refresh();
 }

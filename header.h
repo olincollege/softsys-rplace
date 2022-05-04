@@ -23,7 +23,7 @@
 #define PORT 9999
 
 // board related functions
-#define N_ROWS 60
+#define N_ROWS 50
 #define N_COLS 200
 
 // color definitions
@@ -45,6 +45,7 @@ typedef struct {
     int loc_x;
     int loc_y;
     int color;
+    int locked;
 } PlayerState;
 
 
@@ -54,11 +55,11 @@ void init_screen();
 void init_colors();
 void init_mouse();
 void draw_instructions();
-void draw_grid(int, int);
-void draw_palette();
+void draw_grid(int x_start, int y_start, PlayerState* player_state);
+void draw_palette(int x_start, int y_start, PlayerState * game_state);
 
 //Player draw_all();
-void draw_all(int mouse_loc[2]);
+void draw_all(PlayerState * game_state);
 // void draw_state(State* state);
 
 // network related functions
@@ -100,6 +101,9 @@ int catch_signal(int sig, void (*handler) (int));
 void end_game(int sig);
 
 void init_mouse();
-void get_mouse_loc(int* loc);
+void get_mouse_loc(int ch, int* loc);
 
 void get_grid_loc(int mouse_loc[2], int grid_loc[2]);
+void draw_cursor(int start_x, int start_y, PlayerState * game_state);
+void get_color(int ch, PlayerState* player_state);
+void rectangle(int x_start, int y_start, int width, int height, int color);
