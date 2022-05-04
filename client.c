@@ -2,6 +2,7 @@
 
 #include "header.h"
 
+//
 
 int main(int argc, char *argv[]) {
 	int server_sock;
@@ -29,9 +30,9 @@ int main(int argc, char *argv[]) {
 	}
 	
 	puts("Connected\n");
-    // open the terminal here?
+    // open the game terminal/board here?
     GameState* game_state;
-    revc(server_sock, game_state, size(game_state), 0);
+    recv(server_sock, game_state, sizeof(game_state), 0);
     // game_state into draw command
 	
 	//keep communicating with server
