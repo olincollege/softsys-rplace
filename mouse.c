@@ -41,7 +41,7 @@ MEVENT mouse() {
 
 // Sample code for how this could be integrated.
 // The important part is in the for loop
-void main() {
+void main_mouse() {
   init_all();
 
   for (;;) {
