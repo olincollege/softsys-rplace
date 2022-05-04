@@ -1,11 +1,15 @@
 #include "header.h"
 
+void init_all() {
+	init_screen();
+	init_colors();
+	init_mouse();
+}
+
 // setup the screen
 void init_screen()
 {
     initscr();
-
-	init_colors();
 
     clear();   				// empty screen
 	noecho();  				// no text output
@@ -35,6 +39,18 @@ void init_colors() {
 
 	init_pair(10, COLOR_CYAN, COLOR_WHITE);
 	init_pair(11, COLOR_WHITE, COLOR_CYAN);
+}
+
+void init_mouse() {
+	// Enables keypad mode. This makes (at least for me) mouse events getting
+	// reported as KEY_MOUSE, instead as of random letters.
+	keypad(stdscr, TRUE);
+
+	// Don't mask any mouse events
+	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
+
+	printf("\033[?1003h\n"); // Makes the terminal report mouse movement events
+
 }
 
 void draw_instructions()

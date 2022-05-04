@@ -12,19 +12,7 @@
 
 int main()
 {
-  initscr();
-  cbreak();
-  noecho();
-  init_screen();
-
-  // Enables keypad mode. This makes (at least for me) mouse events getting
-  // reported as KEY_MOUSE, instead as of random letters.
-  keypad(stdscr, TRUE);
-
-  // Don't mask any mouse events
-  mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
-
-  printf("\033[?1003h\n"); // Makes the terminal report mouse movement events
+  init_all();
 
   for (;;) { 
     int c = wgetch(stdscr);
