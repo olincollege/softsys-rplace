@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
             if( send(new_socket, game_state, (sizeof(game_state))*5, 0) != sizeof(game_state) )
 			{
 				perror("send");
-
+			}
 				
 			// add new socket to array of sockets
 			for (i = 0; i < max_clients; i++) {
