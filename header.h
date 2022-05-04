@@ -23,8 +23,8 @@
 #define PORT 9999
 
 // board related functions
-#define N_ROWS 50
-#define N_COLS 200
+#define N_ROWS 30 //50
+#define N_COLS 150 //200
 
 // color definitions
 #define WHITE       1
