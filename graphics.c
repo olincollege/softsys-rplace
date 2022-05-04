@@ -24,17 +24,21 @@ void init_colors() {
 
     // set up color pairs
     start_color();
-	init_pair(2, COLOR_RED, COLOR_BLACK);
-	init_pair(3, COLOR_YELLOW, COLOR_YELLOW);
-	init_pair(4, COLOR_GREEN, COLOR_GREEN);
-	init_pair(5, COLOR_CYAN, COLOR_CYAN);
-	init_pair(6, COLOR_BLUE, COLOR_BLUE);
-	init_pair(7, COLOR_MAGENTA, COLOR_MAGENTA);
-	init_pair(8, COLOR_WHITE, COLOR_WHITE);
-	init_pair(9, COLOR_BLACK, COLOR_BLACK);
+	
+	init_pair(0, COLOR_WHITE, COLOR_WHITE);
+	init_pair(1, COLOR_RED, COLOR_RED);
+	init_pair(2, COLOR_YELLOW, COLOR_YELLOW);
+	init_pair(3, COLOR_GREEN, COLOR_GREEN);
+	init_pair(4, COLOR_CYAN, COLOR_CYAN);
+	init_pair(5, COLOR_BLUE, COLOR_BLUE);
+	init_pair(6, COLOR_MAGENTA, COLOR_MAGENTA);
+	init_pair(7, COLOR_BLACK, COLOR_BLACK);
+
 
 	init_pair(10, COLOR_CYAN, COLOR_WHITE);
 	init_pair(11, COLOR_WHITE, COLOR_CYAN);
+	init_pair(12, COLOR_WHITE, COLOR_BLACK);
+	
 }
 
 void draw_instructions()
@@ -47,35 +51,60 @@ void draw_instructions()
 // good for now, will need to be fixed later to account for color later
 void draw_grid(int x_start, int y_start)
 {
+	attron(COLOR_PAIR(WHITE));
 	for (int row = 0; row < N_ROWS; row ++){
 		for (int col = 0; col < N_COLS; col ++){
 			mvaddch(y_start + row, x_start + col, ACS_CKBOARD);
 		}
 	}
+	attroff(COLOR_PAIR(WHITE));
 }
 
 
 void rectangle(int x_start, int y_start, int width, int height, int color)
 {
-	attron(COLOR_PAIR(RED));
+
+	attron(COLOR_PAIR(color));
     for (int row = y_start; row < y_start + height; row ++){
 		for (int col = x_start; col < x_start + width; col ++){
 			mvaddch(row, col, ACS_CKBOARD);
 		}
 	}
-	attroff(COLOR_PAIR(RED));
+	attroff(COLOR_PAIR(color));
 }
 
 
 void draw_palette(int x_start, int y_start) {
 
-	int pallette_width = N_COLS/8;
+	int palette_height = 5;
+	int palette_width = 16;
 
-	for (int i = 2; i < 9; i ++){
-		int x = x_start + i * pallette_width;
-		rectangle(x, y_start + N_ROWS + 1, pallette_width, 5, RED);
+	int total_width = palette_width*8;
 
+	int x = (N_COLS - total_width)/2 + x_start;
+
+	for (int i = 0; i < 8; i ++){
+		int x1 = x + 1 + palette_width*i;
+		int x2 = x + 1 + palette_width*i + palette_width;
+		int y1 = y_start + N_ROWS + 1;
+		int y2 = y_start + N_ROWS + 1 + palette_height;
+
+		rectangle(x1, y1, palette_width - 4, palette_height, i);
+		
+		attron(COLOR_PAIR(BORDER));
+		// mvhline(y1, x1, 0, palette_width);
+		// mvhline(y2, x1, 0, palette_width);
+		// mvvline(y1, x1, 0, palette_height);
+		// mvvline(y1, x2, 0, palette_height);
+		// mvaddch(y_start, x_start, ACS_ULCORNER);
+		// mvaddch(y_start + N_ROWS, x_start, ACS_LLCORNER);
+		// mvaddch(y_start, x_start + N_COLS, ACS_URCORNER);
+		// mvaddch(y_start + N_ROWS, x_start + N_COLS, ACS_LRCORNER);
+		attroff(COLOR_PAIR(BORDER));
 	}
+
+
+
 
 
 }

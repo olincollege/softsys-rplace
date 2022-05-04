@@ -19,17 +19,18 @@
 #define N_COLS 250
 
 // color definitions
-#define RED         2
-#define YELLOW      3
-#define GREEN       4
-#define CYAN        5
-#define BLUE        6
-#define MAGENTA     7
-#define WHITE       8
-#define BLACK       9
+#define WHITE       0
+#define RED         1
+#define YELLOW      2
+#define GREEN       3
+#define CYAN        4
+#define BLUE        5
+#define MAGENTA     6
+#define BLACK       7
 
-#define SELECTED_PAIR 10
-#define HOVER_PAIR    11
+#define SELECTED_PAIR   10
+#define HOVER_PAIR      11
+#define BORDER          12
 
 // State of the Game from the server end
 typedef struct {
