@@ -36,12 +36,6 @@
 #define HOVER_PAIR      11
 #define BORDER          12
 
-// State of the Game from the server end
-typedef struct {
-    int n_player;
-    int grid[N_ROWS][N_COLS];
-} GameState;
-
 // State of the game from the client end
 typedef struct {
     int grid[N_ROWS][N_COLS];
@@ -50,7 +44,6 @@ typedef struct {
     int color;
 } PlayerState;
 
-GameState* init_game();
 
 // graphics related functions
 void init_all();
