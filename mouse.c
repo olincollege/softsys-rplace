@@ -10,6 +10,7 @@
 
 #include "header.h"
 
+// Function to return a MEVENT with mouse attributes.
 MEVENT mouse() {
   int c = wgetch(stdscr);
 
@@ -21,21 +22,6 @@ MEVENT mouse() {
   else if (c == KEY_MOUSE) {
     MEVENT event;
     if (getmouse(&event) == OK) {
-      erase();      // you can comment this out to make sure the below code is working
-
-      // If hovering
-      if (event.bstate == 0x10000000) {
-        attron(COLOR_PAIR(HOVER_PAIR));
-        mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
-        attroff(COLOR_PAIR(HOVER_PAIR));
-      } 
-      // If double-click
-      if (event.bstate == 0x00000008) {
-        attron(COLOR_PAIR(SELECTED_PAIR));
-        mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
-        attroff(COLOR_PAIR(SELECTED_PAIR));
-      }
-      refresh();
       return event;
     }
     else {
@@ -53,70 +39,28 @@ MEVENT mouse() {
   move(0, 0);
 }
 
+// Sample code for how this could be integrated.
+// The important part is in the for loop
 void main() {
   init_all();
 
   for (;;) {
     MEVENT event = mouse();
+
+    erase();      // you can comment this out to make sure the below code is working
+
+    // If hovering
+    if (event.bstate == 0x10000000) {
+      attron(COLOR_PAIR(HOVER_PAIR));
+      mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
+      attroff(COLOR_PAIR(HOVER_PAIR));
+    } 
+    // If double-click
+    if (event.bstate == 0x00000008) {
+      attron(COLOR_PAIR(SELECTED_PAIR));
+      mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
+      attroff(COLOR_PAIR(SELECTED_PAIR));
+    }
+    refresh();
   }
-}
-
-int main_old()
-{
-  init_all();
-
-  for (;;) { 
-    int c = wgetch(stdscr);
- 
-    // Exit the program on new line fed
-    if (c == '\n')
-      break;
- 
-    char buffer[512];
-    size_t max_size = sizeof(buffer);
-    if (c == ERR) {
-      snprintf(buffer, max_size, "Nothing happened.");
-    }
-    else if (c == KEY_MOUSE) {
-      MEVENT event;
-      if (getmouse(&event) == OK) {
-        erase();      // you can comment this out to make sure the below code is working
-
-        // If hovering
-        if (event.bstate == 0x10000000) {
-          attron(COLOR_PAIR(HOVER_PAIR));
-          mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
-          attroff(COLOR_PAIR(HOVER_PAIR));
-        } 
-        // If double-click
-        if (event.bstate == 0x00000008) {
-          attron(COLOR_PAIR(SELECTED_PAIR));
-          mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
-          attroff(COLOR_PAIR(SELECTED_PAIR));
-        }
-        refresh();
-      }
-      else {
-        snprintf(buffer, max_size, "Got bad mouse event.");
-      }
-    }
-    else {
-      snprintf(buffer, max_size, "Pressed key %d (%s)", c, keyname(c));      
-    }
- 
-    move(0, 0);
-    insertln();
-    addstr(buffer);
-    clrtoeol();
-    move(0, 0);
-  }
- 
-  printf("\033[?1003l\n"); // Disable mouse movement events, as l = low
-
-  
-  endwin();
-
-  system("reset");
- 
-  return 0;
 }

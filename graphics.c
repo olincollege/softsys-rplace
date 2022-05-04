@@ -50,7 +50,6 @@ void init_mouse() {
 	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
 	printf("\033[?1003h\n"); // Makes the terminal report mouse movement events
-
 }
 
 void draw_instructions()
