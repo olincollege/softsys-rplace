@@ -56,8 +56,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	
-	//set master socket to allow multiple connections ,
-	//this is just a good habit, it will work without this
+	//set master socket to allow multiple connections
 	if( setsockopt(master_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&opt,
 		sizeof(opt)) < 0 )
 	{
