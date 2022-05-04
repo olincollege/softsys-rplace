@@ -10,7 +10,58 @@
 
 #include "header.h"
 
-int main()
+MEVENT mouse() {
+  int c = wgetch(stdscr);
+
+  char buffer[512];
+  size_t max_size = sizeof(buffer);
+  if (c == ERR) {
+    snprintf(buffer, max_size, "Nothing happened.");
+  }
+  else if (c == KEY_MOUSE) {
+    MEVENT event;
+    if (getmouse(&event) == OK) {
+      erase();      // you can comment this out to make sure the below code is working
+
+      // If hovering
+      if (event.bstate == 0x10000000) {
+        attron(COLOR_PAIR(HOVER_PAIR));
+        mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
+        attroff(COLOR_PAIR(HOVER_PAIR));
+      } 
+      // If double-click
+      if (event.bstate == 0x00000008) {
+        attron(COLOR_PAIR(SELECTED_PAIR));
+        mvaddch(event.y, event.x, ACS_DIAMOND);	// representing player location
+        attroff(COLOR_PAIR(SELECTED_PAIR));
+      }
+      refresh();
+      return event;
+    }
+    else {
+      snprintf(buffer, max_size, "Got bad mouse event.");
+    }
+  }
+  else {
+    snprintf(buffer, max_size, "Pressed key %d (%s)", c, keyname(c));      
+  }
+
+  move(0, 0);
+  insertln();
+  addstr(buffer);
+  clrtoeol();
+  move(0, 0);
+}
+
+void main() {
+  init_all();
+
+  for (;;) {
+    MEVENT event = mouse();
+  }
+}
+
+int main_old()
 {
   init_all();
 
