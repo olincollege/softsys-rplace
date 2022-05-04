@@ -39,7 +39,7 @@
 
 // State of the game from the client end
 typedef struct {
-    int grid[N_ROWS][N_COLS];
+    int grid[N_ROWS][N_COLS/2];
     int loc_x;
     int loc_y;
     int color;
