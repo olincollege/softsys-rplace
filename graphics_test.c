@@ -38,13 +38,7 @@ int main(int argc, char *argv[])
 {
     catch_signal(SIGINT, end_game);
     // do initialization stuff for network here 
-
-    
-		
-    // create a new instance of the game
-    GameState* game_state = init_game();
-    
-    
+        
     // until the program closes, check for updates and then push
     system("xdotool key Ctrl+minus");
     system("xdotool key Ctrl+minus");
@@ -52,12 +46,19 @@ int main(int argc, char *argv[])
 
     system("resize -s 75 300 > /dev/null");
     init_screen();
+    int ch;
+
+
     for (;;){
         // check for read data
 
         
 
-        draw_all();
+        // draw_all();
+        
+        ch = wgetch(stdscr);
+
+        init_mouse();
 
 
 

@@ -105,28 +105,9 @@ void draw_palette(int x_start, int y_start) {
 
 	for (int i = 0; i < 8; i ++){
 		int x1 = x + 1 + palette_width*i;
-		int x2 = x + 1 + palette_width*i + palette_width;
 		int y1 = y_start + N_ROWS + 1;
-		int y2 = y_start + N_ROWS + 1 + palette_height;
-
 		rectangle(x1, y1, palette_width - 4, palette_height, i);
-		
-		attron(COLOR_PAIR(BORDER));
-		// mvhline(y1, x1, 0, palette_width);
-		// mvhline(y2, x1, 0, palette_width);
-		// mvvline(y1, x1, 0, palette_height);
-		// mvvline(y1, x2, 0, palette_height);
-		// mvaddch(y_start, x_start, ACS_ULCORNER);
-		// mvaddch(y_start + N_ROWS, x_start, ACS_LLCORNER);
-		// mvaddch(y_start, x_start + N_COLS, ACS_URCORNER);
-		// mvaddch(y_start + N_ROWS, x_start + N_COLS, ACS_LRCORNER);
-		attroff(COLOR_PAIR(BORDER));
 	}
-
-
-
-
-
 }
 
 
