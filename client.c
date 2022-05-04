@@ -2,6 +2,7 @@
 
 #include "header.h"
 
+int is_locked = 0;
 
 int catch_signal(int sig, void (*handler) (int)) {
     struct sigaction action;
@@ -60,14 +61,20 @@ void get_color(int ch, PlayerState* player_state)
         player_state->color = 7;
 }
 
-void child_func(PlayerState * player_state){
-    player_state->locked = 1;
-    //exit(1);
+void child_func(int sig)
+{
+    is_locked = 0;
 }
 
 
 int main(int argc, char *argv[]) {
+
     catch_signal(SIGINT, end_game);
+    catch_signal(SIGALRM, child_func);
+
+
+
+
 	int server_sock;
 	struct sockaddr_in address;
 	char message[1000] , server_reply[2000];
@@ -130,8 +137,6 @@ int main(int argc, char *argv[]) {
     int grid_loc[2];
     int ch;
 
-    pid_t pid;
-	
 	// keep communicating with server
 	for (;;)
 	{
@@ -147,30 +152,28 @@ int main(int argc, char *argv[]) {
         player_state->loc_x = grid_loc[0];
         player_state->loc_y = grid_loc[1];
 
-		if (ch == KEY_DOWN && player_state->locked != 1){
+		if (ch == 10 && !is_locked){
             
 			if((player_state->loc_x != -1) && (player_state->loc_y != -1)){
-                pid = fork();
-                                       
-                    
-                    // int pixel_array_out[3];
-                    // pixel_array_out[0] = player_state->loc_y;
-                    // pixel_array_out[1] = player_state->loc_x;
-                    // pixel_array_out[2] = player_state->color;
-                    // send(server_sock, pixel_array_out, (sizeof(pixel_array_out)), 0);
+
+                is_locked = 1;
+                alarm(10);
+                int pixel_array_out[3];
+                pixel_array_out[0] = player_state->loc_y;
+                pixel_array_out[1] = player_state->loc_x;
+                pixel_array_out[2] = player_state->color;
+                send(server_sock, pixel_array_out, (sizeof(pixel_array_out)), 0);
         	}
         }
-        if (pid == 0){
-            child_func(player_state);
-        }
-        else{
-            draw_all(player_state);
-        }
 
+        if (is_locked)
+            player_state->locked = 1;
+        else
+            player_state->locked = 0;
+        
+        draw_all(player_state);
 
         
-        
-
 
 		// Receive change from server and update
 		// int pixel_array_in[3];

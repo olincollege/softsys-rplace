@@ -1,4 +1,5 @@
 # r/place
 
 ### Package dependencies
-`xdotool`
+`xdotool`\
+`sudo apt-get install xdotool`
