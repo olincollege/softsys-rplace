@@ -1,28 +1,33 @@
-# `r/place`
-## Chris Allum, Maya Sivanandan, Berwin Lan
+# `r/place`: a terminal-based multiplayer interactive canvas
+### Chris Allum, Maya Sivanandan, Berwin Lan
 
-### Project Goals
-We were inspired by the subreddit `r/place`, which was a canvas where users could click on a pixel and change its color every 5 minutes. We plan on using networking and the `ncurses` library for the GUI to recreate this functionality on a much smaller and more basic canvas. For our lower bound, we are creating an interface where a client can connect to a server and use arrow keys to fill pixels. Additional goals include multiple clients connecting and editing the canvas, a 5-minute timer, and using the mouse cursor instead of arrow keys to select pixels and colors.
+## Objectives
+We were inspired by the subreddit `r/place`, which was a canvas where users could click on a pixel and change its color every 5 minutes. The goal of our project was to use networking and the `ncurses` library for the GUI to recreate this functionality on a much smaller and more basic canvas. For our lower bound, we are creating an interface where a client can connect to a server and use arrow keys to fill pixels. Additional goals include multiple clients connecting and editing the canvas, a 5-minute timer, and using the mouse cursor instead of arrow keys to select pixels and colors.
 
-### Learning Goals
+## Learning Goals
+Our learning goals at the start of the project were the following:
 * working with threading and semaphores
+    * We did not center this goal in the scope of our project. One area we could have used threading is in handling multiple clients, which is supposedly better for scaling and preventing deadlocks.
 * more advanced networking than both our Project 1s
+    * This is where a bulk of our time went. We were more advanced in both the number of clients the program could handle and the kind of data being sent over the network. With `r/place`, multiple clients can play at once, and we are sending different types of data over the network based on multiple input modes.
 * an interactive and engaging project
+    * We hope that it is engaging! We focused a lot on the GUI and making it simple to use and interact with.
 
-### Project Resources
+## Outcomes
+TODO w/ screenshots!
+### Networking
+* one server that connects to all the clients and centralizes any information from clients and updates them
+* server forks when each new client connects
+
+### GUI
+* server doesn't have a GUI, its only role is to do updates and host clients
+* client's initial interface is a blank canvas
+* use cursor to select pixel location, stdin to select color by number, enter to place pixel
+    * info is sent to server
+* GUI automatically updates when stuff is sent from the server
+
+## Resources
 * Chapter 11 in Griffiths, D. (2012). Head First C. O’Reilly Media.
-* [Beej's guide to network programming](https://beej.us/guide/bgnet/)
+* We found [Beej's guide to network programming](https://beej.us/guide/bgnet/) extremely helpful for all things related to networking and sockets.
 * `ncurses` documentation
     * [Sample `ncurses` code](http://www.paulgriffiths.net/program/c/curses.php)
-
-### Ongoing work
-| **Task**                                                                          | **Point person** | **Deliverable**                                           |
-|-----------------------------------------------------------------------------------|------------------|-----------------------------------------------------------|
-| Single-player game where player can place pixels on a canvas                      | Chris            | Functional single-player game with arrow controls and GUI |
-| Build off existing boilerplate code to have multiple clients connect to a server  | Maya             | Multiple clients can connect to the same server           |
-| Figure out how to share gamestates between server and client                      | Berwin           | Architecture and/or implementation exists                 |
-| Look into getting mouse click coordinates instead of using arrow keys to navigate | Berwin           | N/A, maybe some sample code                               |
-
-### Team Workspaces
-* [GitHub repo](https://github.com/olincollege/softsys-rplace)
-* [Todoist](https://todoist.com/app/project/2289787951)
