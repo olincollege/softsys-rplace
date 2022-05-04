@@ -8,6 +8,7 @@ int main(int argc, char *argv[]) {
 	int server_sock;
 	struct sockaddr_in address;
 	char message[1000] , server_reply[2000];
+	PlayerState *player_state = malloc(sizeof(PlayerState));
 	
 	// Create socket to connect to
 	server_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -33,8 +34,21 @@ int main(int argc, char *argv[]) {
     // open the game terminal/board here?
 	
 	
-	int (game_state)[N_ROWS][N_COLS];
-    recv(server_sock, *game_state, (sizeof(game_state)), 0);
+	int (game_state)[N_ROWS][N_COLS/2];
+    recv(server_sock, *game_state, sizeof(game_state), 0);
+
+	// Initalize player_state values
+	for (int r = 0; r < N_ROWS; r++){
+		for (int c = 0; c < N_COLS/2; c++){
+			player_state->grid[r][c] = game_state[r][c];
+		}
+	}
+	player_state->loc_x = 0;
+	player_state->loc_y = 0;
+	player_state->color = 0;
+
+
+
 
     // game_state into draw command
 	
@@ -42,11 +56,21 @@ int main(int argc, char *argv[]) {
 	for (;;)
 	{
 
-		//Set up buffer hold of mouse click location and color choice
+		//if num/arrow key pressed
+			// player_state->color = num pressed
+
+		// if click
+			// player_state->loc_x = mouse_x;
+			// player_state->loc_y = mouse_y;
+
 
 		// if (enter pressed)
-			//send(server_sock, *pixel_array_out, sizeof(pixel_array_out), 0);
-			// Fork to semaphore/mutex to stop sending but keep receiving for 1 min
+			int pixel_array_out[3];
+			pixel_array_out[0] = player_state->loc_x;
+			pixel_array_out[1] = player_state->loc_y;
+			pixel_array_out[2] = player_state->color;
+			send(server_sock, pixel_array_out, (sizeof(pixel_array_out)), 0);
+			// Fork to semaphore/mutex to stop sending but keep receiving for delay time
 
 		// Receive change from server and update
 		//recv(server_sock, *pixel_array_in, sizeof(pixel_array_in), 0);
