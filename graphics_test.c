@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
     system("resize -s 75 300 > /dev/null");
     init_screen();
-    int ch;
+    init_mouse();
 
 
     for (;;){
@@ -54,11 +54,16 @@ int main(int argc, char *argv[])
 
         
 
-        // draw_all();
+        draw_all();
         
-        ch = wgetch(stdscr);
+        // ch = wgetch(stdscr);
+        int mouse_loc[2];
+        get_mouse_loc(mouse_loc);
+        printf("%d",mouse_loc[0]);
 
-        init_mouse();
+
+
+        
 
 
 

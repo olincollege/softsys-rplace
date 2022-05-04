@@ -98,3 +98,4 @@ int catch_signal(int sig, void (*handler) (int));
 void end_game(int sig);
 
 void init_mouse();
+void get_mouse_loc(int* loc);
