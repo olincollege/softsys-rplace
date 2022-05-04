@@ -4,30 +4,8 @@
 
 #define PORT 9999
 
-int catch_signal(int sig, void (*handler) (int)) {
-    struct sigaction action;
-    action.sa_handler = handler;
-    sigemptyset(&action.sa_mask);
-    action.sa_flags = 0;
-    return sigaction(sig, &action, NULL);
-}
-
-void end_game(int sig)
-{   
-    printf("\033[?1003l\n"); // Disable mouse movement events, as l = low
-    endwin();
-    // system("xdotool key Ctrl+parenright");
-    system("xdotool key Ctrl+plus");
-    system("xdotool key Ctrl+plus");
-    system("resize -s 24 80 > /dev/null");
-    system("reset");
-    
-    exit(EXIT_SUCCESS);
-}
-
 int main(int argc, char *argv[])
 {
-    catch_signal(SIGINT, end_game);
     // do initialization stuff for network here 
 
     int opt = TRUE;
@@ -70,7 +48,7 @@ int main(int argc, char *argv[])
 	// type of socket created
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = INADDR_ANY;
-	address.sin_port = htons( PORT );
+	address.sin_port = htons(PORT);
 		
 	// bind the socket to localhost port 9999
 	if (bind(master_socket, (struct sockaddr *)&address, sizeof(address))<0)
@@ -158,6 +136,7 @@ int main(int argc, char *argv[])
 				}
 			}
 		}
+	
 			
 		// else it's some IO operation on some other socket
 		for (i = 0; i < max_clients; i++) {
@@ -177,40 +156,17 @@ int main(int argc, char *argv[])
 					client_socket[i] = 0;
 				}
 					
-				// Echo back the message that came in
+				//Receive pixel change and send out to all clients
 				else {
-					// set the string terminating NULL byte on the end
-					// of the data read
-					buffer[valread] = '\0';
-					send(sd, buffer, strlen(buffer), 0 );
+					int pixel_array_out[3];
+					recv(input_socket, pixel_array_out, (sizeof(pixel_array_out)), 0);
+					for (i = 0; i < max_clients; i++) {
+						send(client_socket[i], pixel_array_out, (sizeof(pixel_array_out)), 0);
+					}
 				}
 			}
 		}
 	}
-
-
-    // until the program closes, check for updates and then push
-    system("xdotool key Ctrl+minus");
-    system("xdotool key Ctrl+minus");
-    // system("xdotool key Ctrl+minus");
-
-    system("resize -s 75 300 > /dev/null");
-    init_screen();
-    for (;;) {
-        // check for read data
-
-        
-
-        //draw_all();
-
-
-
-
-
-
-
-    }
     return 0;
-
 
 }

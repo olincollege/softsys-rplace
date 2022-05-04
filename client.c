@@ -60,17 +60,20 @@ int main(int argc, char *argv[]) {
 			// player_state->color = num pressed
 
 		// if click
-			// player_state->loc_x = mouse_x;
-			// player_state->loc_y = mouse_y;
+			//int mouse_temp = mouse_loc()
+			// player_state->loc_x = mouse_loc[0];
+			// player_state->loc_y = mouse_loc[1];
 
 
-		// if (enter pressed)
-			int pixel_array_out[3];
-			pixel_array_out[0] = player_state->loc_x;
-			pixel_array_out[1] = player_state->loc_y;
-			pixel_array_out[2] = player_state->color;
-			send(server_sock, pixel_array_out, (sizeof(pixel_array_out)), 0);
+		// if (enter pressed) and 
+			if((player_state->loc_x != -1) && (player_state->loc_y != -1)){
+				int pixel_array_out[3];
+				pixel_array_out[0] = player_state->loc_x;
+				pixel_array_out[1] = player_state->loc_y;
+				pixel_array_out[2] = player_state->color;
+				send(server_sock, pixel_array_out, (sizeof(pixel_array_out)), 0);
 			// Fork to semaphore/mutex to stop sending but keep receiving for delay time
+			}
 
 		// Receive change from server and update
 		//recv(server_sock, *pixel_array_in, sizeof(pixel_array_in), 0);
