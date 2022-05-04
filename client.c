@@ -31,8 +31,16 @@ int main(int argc, char *argv[]) {
 	
 	puts("Connected\n");
     // open the game terminal/board here?
-    GameState* game_state;
-    recv(server_sock, game_state, sizeof(game_state), 0);
+	int game_state[63][N_COLS];
+    recv(server_sock, game_state, (sizeof(game_state))*5, 0);
+
+	for (int i = 0 ; i < 63 ; i++){
+		for (int j = 0 ; j < N_COLS ; j++){
+			printf("%d ", game_state[i][j]);
+		}
+		printf("\n End of row %d\n", i+1);
+	}
+
     // game_state into draw command
 	
 	//keep communicating with server
