@@ -8,6 +8,8 @@ int main(int argc, char *argv[])
 {
     // do initialization stuff for network here 
 
+	system("hostname -I");
+
     int opt = TRUE;
 	int master_socket, addrlen, new_socket, client_socket[30],
 		max_clients = 30, activity, i, valread, sd, input_socket;
@@ -33,7 +35,7 @@ int main(int argc, char *argv[])
 	}
 		
 	// create a master socket
-	if( (master_socket = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+	if( (master_socket = socket(PF_INET, SOCK_STREAM, 0)) == 0)
 	{
 		perror("socket failed");
 		exit(EXIT_FAILURE);
@@ -48,9 +50,9 @@ int main(int argc, char *argv[])
 	}
 	
 	// type of socket created
-	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = INADDR_ANY;
-	address.sin_port = htons(PORT);
+	address.sin_family = PF_INET;
+	address.sin_addr.s_addr = htonl(INADDR_ANY);
+	address.sin_port = (in_port_t)htons(PORT);
 		
 	// bind the socket to localhost port 9999
 	if (bind(master_socket, (struct sockaddr *)&address, sizeof(address))<0)

@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 	puts("Socket created");
 	
 	// type of socket created
-    address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    address.sin_addr.s_addr = inet_addr(argv[1]);
 	address.sin_family = AF_INET;
 	address.sin_port = htons(9999);
 
