@@ -10,9 +10,33 @@
 
 #include <curses.h>
 #include <stdio.h>
+#include <signal.h>
+#include <errno.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+
+
+int catch_signal(int sig, void (*handler) (int)) {
+    struct sigaction action;
+    action.sa_handler = handler;
+    sigemptyset(&action.sa_mask);
+    action.sa_flags = 0;
+    return sigaction(sig, &action, NULL);
+}
+
+void end_game(int sig)
+{   
+    
+    endwin();
+    system("reset");
+    
+    exit(EXIT_SUCCESS);
+}
  
 int main()
 {
+    catch_signal(SIGINT, end_game);
   initscr();
   cbreak();
   noecho();

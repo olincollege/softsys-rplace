@@ -74,7 +74,10 @@ int main()
  
   printf("\033[?1003l\n"); // Disable mouse movement events, as l = low
 
+  
   endwin();
+
+  system("reset");
  
   return 0;
 }

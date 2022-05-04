@@ -24,14 +24,14 @@ void init_colors() {
 
     // set up color pairs
     start_color();
-	init_pair(0, COLOR_RED, COLOR_RED);
-	init_pair(1, COLOR_YELLOW, COLOR_YELLOW);
-	init_pair(2, COLOR_GREEN, COLOR_GREEN);
-	init_pair(3, COLOR_CYAN, COLOR_CYAN);
-	init_pair(4, COLOR_BLUE, COLOR_BLUE);
-	init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA);
-	init_pair(6, COLOR_WHITE, COLOR_WHITE);
-	init_pair(7, COLOR_BLACK, COLOR_BLACK);
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	init_pair(3, COLOR_YELLOW, COLOR_YELLOW);
+	init_pair(4, COLOR_GREEN, COLOR_GREEN);
+	init_pair(5, COLOR_CYAN, COLOR_CYAN);
+	init_pair(6, COLOR_BLUE, COLOR_BLUE);
+	init_pair(7, COLOR_MAGENTA, COLOR_MAGENTA);
+	init_pair(8, COLOR_WHITE, COLOR_WHITE);
+	init_pair(9, COLOR_BLACK, COLOR_BLACK);
 
 	init_pair(10, COLOR_CYAN, COLOR_WHITE);
 	init_pair(11, COLOR_WHITE, COLOR_CYAN);
@@ -54,32 +54,32 @@ void draw_grid(int x_start, int y_start)
 	}
 }
 
-void draw_palette() {
+
+void rectangle(int x_start, int y_start, int width, int height, int color)
+{
 	attron(COLOR_PAIR(RED));
-	mvaddch(2, 1, ACS_CKBOARD);
+    for (int row = y_start; row < y_start + height; row ++){
+		for (int col = x_start; col < x_start + width; col ++){
+			mvaddch(row, col, ACS_CKBOARD);
+		}
+	}
 	attroff(COLOR_PAIR(RED));
-	attron(COLOR_PAIR(YELLOW));
-	mvaddch(2, 2, ACS_CKBOARD);
-	attroff(COLOR_PAIR(YELLOW));
-	attron(COLOR_PAIR(GREEN));
-	mvaddch(2, 3, ACS_CKBOARD);
-	attroff(COLOR_PAIR(GREEN));
-	attron(COLOR_PAIR(CYAN));
-	mvaddch(2, 4, ACS_CKBOARD);
-	attroff(COLOR_PAIR(CYAN));
-	attron(COLOR_PAIR(BLUE));
-	mvaddch(2, 5, ACS_CKBOARD);
-	attroff(COLOR_PAIR(BLUE));
-	attron(COLOR_PAIR(MAGENTA));
-	mvaddch(2, 6, ACS_CKBOARD);
-	attroff(COLOR_PAIR(MAGENTA));
-	attron(COLOR_PAIR(WHITE));
-	mvaddch(2, 7, ACS_CKBOARD);
-	attroff(COLOR_PAIR(WHITE));
-	attron(COLOR_PAIR(BLACK));
-	mvaddch(2, 8, ACS_CKBOARD);
-	attroff(COLOR_PAIR(BLACK));
 }
+
+
+void draw_palette(int x_start, int y_start) {
+
+	int pallette_width = N_COLS/8;
+
+	for (int i = 2; i < 9; i ++){
+		int x = 
+		rectangle(row, y_start + N_ROWS + 1, pallette_width, 5, RED);
+
+	}
+
+
+}
+
 
 
 // KEEP AS VOID FUNC!!!!
@@ -95,7 +95,7 @@ void draw_all() {
 
 	draw_grid(x_start, y_start);
 	draw_instructions();
-	draw_palette();
+	draw_palette(x_start, y_start);
 
 	refresh();
 }

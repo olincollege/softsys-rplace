@@ -19,14 +19,14 @@
 #define N_COLS 250
 
 // color definitions
-#define RED         0
-#define YELLOW      1
-#define GREEN       2
-#define CYAN        3
-#define BLUE        4
-#define MAGENTA     5
-#define WHITE       6
-#define BLACK       7
+#define RED         2
+#define YELLOW      3
+#define GREEN       4
+#define CYAN        5
+#define BLUE        6
+#define MAGENTA     7
+#define WHITE       8
+#define BLACK       9
 
 #define SELECTED_PAIR 10
 #define HOVER_PAIR    11
