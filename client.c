@@ -3,6 +3,7 @@
 #include "header.h"
 
 int is_locked = 0;
+int just_pressed = 0;
 
 int catch_signal(int sig, void (*handler) (int)) {
     struct sigaction action;
@@ -91,7 +92,11 @@ int main(int argc, char *argv[]) {
 	
 	// type of socket created
     // address.sin_addr.s_addr = inet_addr(argv[1]);
-    address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    // address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    if (argc > 1)
+        address.sin_addr.s_addr = inet_addr(argv[1]);
+    else
+        address.sin_addr.s_addr = inet_addr("127.0.0.1");
 	address.sin_family = AF_INET;
 	address.sin_port = htons(PORT);
 
@@ -127,9 +132,6 @@ int main(int argc, char *argv[]) {
 	player_state->color = 1;
     player_state->locked = 0;
 
-
-
-
     // game_state into draw command
     
     // until the program closes, check for updates and then push
@@ -164,14 +166,14 @@ int main(int argc, char *argv[]) {
 		if (ch == 10 && !is_locked){
             
 			if((player_state->loc_x != -1) && (player_state->loc_y != -1)){
-
-                is_locked = 1;
-                alarm(10);
+                just_pressed = 1;
                 int pixel_array_out[3];
                 pixel_array_out[0] = player_state->loc_y;
                 pixel_array_out[1] = player_state->loc_x;
                 pixel_array_out[2] = player_state->color;
-                send(server_sock, pixel_array_out, (sizeof(pixel_array_out)), 0);
+                send(server_sock, pixel_array_out, (sizeof(pixel_array_out)), MSG_CONFIRM);
+                send(server_sock, pixel_array_out, (sizeof(pixel_array_out)), MSG_CONFIRM);
+
         	}
         }
 
@@ -179,15 +181,22 @@ int main(int argc, char *argv[]) {
             player_state->locked = 1;
         else
             player_state->locked = 0;
-        
-        draw_all(player_state);
 
-        
 
 		// Receive change from server and update
 		int pixel_array_in[3];
-        if (recv(server_sock, pixel_array_in, sizeof(pixel_array_in), MSG_DONTWAIT) > -1)
+        if (recv(server_sock, pixel_array_in, sizeof(pixel_array_in), MSG_DONTWAIT) > -1){
             player_state->grid[pixel_array_in[0]][pixel_array_in[1]] = pixel_array_in[2];
+            if (just_pressed){
+                just_pressed = 0;
+                is_locked = 1;
+
+                alarm(10);
+            }
+            
+        }
+        draw_all(player_state);
+            
 
 	}
 	

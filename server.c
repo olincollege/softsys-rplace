@@ -4,13 +4,40 @@
 
 #define PORT 9999
 
+int game_state[N_ROWS][N_COLS/2] = {0};
+
+int update = 0;
+
+
+int new_x, new_y, new_color;
+
+
+void *get_updates(void *_fd)
+{
+
+	int fd = *(int *)_fd;
+	int array[3] = {0};
+
+	while(recv(fd, array, sizeof(array), MSG_WAITALL) != 12){}
+		new_x = array[0];
+		new_y = array[1];
+		new_color = array[2];
+		game_state[array[0]][array[1]] = array[2];
+		update = 1;
+	
+	return NULL;
+}
+
+
+
 int main(int argc, char *argv[])
 {
     // do initialization stuff for network here 
 
+	system("hostname -I");
     int opt = TRUE;
-	int master_socket, addrlen, new_socket, client_socket[30],
-		max_clients = 30, activity, i, valread, sd, input_socket;
+	int master_socket, addrlen, new_socket, client_socket[5],
+		max_clients = 5, activity, i, valread, sd, input_socket;
 	int max_sd;
 	struct sockaddr_in address;
 		
@@ -20,11 +47,8 @@ int main(int argc, char *argv[])
 	fd_set readfds;
 		
     // create a new instance of the game
-    int game_state[N_ROWS][N_COLS/2] = {0};
-
-	game_state[10][10] = 3;
+	int (pixel_array_out)[3];
     
-
 	
 	// initialise all client_socket[] to 0 so not checked
 	for (i = 0; i < max_clients; i++)
@@ -70,7 +94,12 @@ int main(int argc, char *argv[])
 	// accept the incoming connection
 	addrlen = sizeof(address);
 	puts("Waiting for connections ...");
-		
+
+
+	pthread_t thread;
+
+	struct timeval tv = {.1, 0}; 
+
 	for (;;)
 	{
 		// clear the socket set
@@ -96,7 +125,7 @@ int main(int argc, char *argv[])
 		}
 	
 		// wait for an activity on one of the sockets, timeout is NULL,
-		// so wait indefinitely
+		// so wait indefely
 		activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
 	
 		if ((activity < 0) && (errno!=EINTR))
@@ -139,14 +168,19 @@ int main(int argc, char *argv[])
 			}
 		}
 	
-			
+
 		// else it's some IO operation on some other socket
 		for (i = 0; i < max_clients; i++) {
+
+
 			input_socket = client_socket[i];
 				
 			if (FD_ISSET(input_socket, &readfds)) {
+
+				
 				// Check if it was for closing, and also read the incoming message
 				if ((valread = read(input_socket, buffer, 1024)) == 0) {
+					
 					// Somebody disconnected, get their details and print
 					getpeername(input_socket, (struct sockaddr*)&address, \
 						(socklen_t*)&addrlen);
@@ -156,19 +190,25 @@ int main(int argc, char *argv[])
 					// Close the socket and mark as 0 in list for reuse
 					close(input_socket);
 					client_socket[i] = 0;
-				}
-					
-				//Receive pixel change and send out to all clients
+				}					
 				else {
-					int (pixel_array_out)[3];
-					recv(input_socket, pixel_array_out, sizeof(pixel_array_out), 0);
-					game_state[pixel_array_out[0]][pixel_array_out[1]] = pixel_array_out[2];
-					for (i = 0; i < max_clients; i++) {
-						send(client_socket[i], pixel_array_out, (sizeof(pixel_array_out)), 0);
-					}
+					int fd = input_socket;
+					pthread_create(&thread, NULL, &get_updates, &fd);		
 				}
 			}
 		}
+
+		if (update){
+			for (i = 0; i < max_clients; i++) {
+				pixel_array_out[0] = new_x;
+				pixel_array_out[1] = new_y;
+				pixel_array_out[2] = new_color;
+				printf("new tile placed\n");
+				send(client_socket[i], pixel_array_out, (sizeof(pixel_array_out)), 0);
+			}
+			update = 0;
+		}
+
 	}
     return 0;
 

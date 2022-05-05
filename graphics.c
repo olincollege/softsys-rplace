@@ -1,10 +1,5 @@
 #include "header.h"
 
-void init_all() {
-	init_screen();
-
-	init_mouse();
-}
 
 // setup the screen
 void init_screen()
@@ -56,6 +51,10 @@ void draw_instructions()
 	mvprintw(0, 1, "Welcome to Terminal r/place simulations");
 	mvprintw(1, 1, "CTRL+C: Quit");
 	mvprintw(2, 1, "Use Left and Right arrow to select color");
+	mvprintw(3, 1, "Hover over a tile to preview");
+	mvprintw(4, 1, "Click enter to place a tile");
+
+
 
 }
 
@@ -118,8 +117,8 @@ void draw_cursor(int start_x, int start_y, PlayerState * game_state) {
 
 	
 	if (grid_x != -1 && grid_y != -1){
-		mvprintw(3, 1, "X Coordinate: %d\n", grid_x);
-		mvprintw(4, 1, "Y Coordinate: %d\n", grid_y);
+		mvprintw(6, 1, "X Coordinate: %d\n", grid_x);
+		mvprintw(7, 1, "Y Coordinate: %d\n", grid_y);
 		rectangle(grid_x*2 + start_x, grid_y + start_y, 2, 1, color);
 
 	}
@@ -128,7 +127,7 @@ void draw_cursor(int start_x, int start_y, PlayerState * game_state) {
 
 void draw_locked(PlayerState * game_state){
 	if (game_state->locked)
-		mvprintw(5, 1, "LOCKED");
+		mvprintw(8, 1, "GAME LOCKED - You must wait until 10s is over");
 
 }
 

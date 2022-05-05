@@ -17,7 +17,12 @@ Our learning goals at the start of the project were the following:
 TODO w/ screenshots!
 ### Networking
 * one server that connects to all the clients and centralizes any information from clients and updates them
-* server forks when each new client connects
+* Using signal to evaluate multiple simultanious clients
+* If a client joins part way throgh the game, the server will automatically provide them the most recent version of the board so that everyone is always shown the same thing, no matter when you join.
+
+###
+* Whenever the server detects the one of the clients has pushed a change, it creates a new thread to assess what has changed. The reason that we are using threads is that reading from a socket can potentially take a very long time. Whenever one reads from a socket, if it cannot read the data immedietly, it will block the process. Because we still needed different processes to run while checking for updates, we needed to use threads. 
+* We originally tried to use forking. However, we ran into a ton of difficulty sharing data between the child and parent processes. We therefore swiched to multiple threads.
 
 ### GUI
 * server doesn't have a GUI, its only role is to do updates and host clients
@@ -25,6 +30,7 @@ TODO w/ screenshots!
 * use cursor to select pixel location, stdin to select color by number, enter to place pixel
     * info is sent to server
 * GUI automatically updates when stuff is sent from the server
+
 
 ## Resources
 * Chapter 11 in Griffiths, D. (2012). Head First C. O’Reilly Media.

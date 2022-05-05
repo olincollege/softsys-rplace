@@ -20,13 +20,15 @@
 #include <netinet/in.h>
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
 #include <fcntl.h>
+#include <sys/wait.h>
+#include <pthread.h>
 
 #define PORT 9999
 
 
 // board related functions
-#define N_ROWS 30 //50
-#define N_COLS 150 //200
+#define N_ROWS 50//5//30 //50
+#define N_COLS 200//150 //200
 
 // color definitions
 #define WHITE       1
@@ -109,3 +111,4 @@ void get_grid_loc(int mouse_loc[2], int grid_loc[2]);
 void draw_cursor(int start_x, int start_y, PlayerState * game_state);
 void get_color(int ch, PlayerState* player_state);
 void rectangle(int x_start, int y_start, int width, int height, int color);
+
