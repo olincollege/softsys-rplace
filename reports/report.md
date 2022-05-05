@@ -7,7 +7,7 @@ We were inspired by the subreddit `r/place`, which was a canvas where users coul
 ## Learning Goals
 Our learning goals at the start of the project were the following:
 * working with threading and semaphores
-    * We did not center this goal in the scope of our project. One area we could have used threading is in handling multiple clients, which is supposedly better for scaling and preventing deadlocks.
+    * We did not center this goal in the scope of our project as we instead chose to use select() to handle the multiple clients, as this is better for handling a large number of clients with minimal risk of deadlocks.
 * more advanced networking than both our Project 1s
     * This is where a bulk of our time went. We were more advanced in both the number of clients the program could handle and the kind of data being sent over the network. With `r/place`, multiple clients can play at once, and we are sending different types of data over the network based on multiple input modes.
 * an interactive and engaging project
