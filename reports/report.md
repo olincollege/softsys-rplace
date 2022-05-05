@@ -14,18 +14,22 @@ Our learning goals at the start of the project were the following:
     * We hope that it is engaging! We focused a lot on the GUI and making it simple to use and interact with.
 
 ## Outcomes
-TODO w/ screenshots!
 
+```c
+typedef struct {
+    int grid[N_ROWS][N_COLS/2];
+    int loc_x;
+    int loc_y;
+    int color;
+    int locked;
+} PlayerState;
+```
 * Each client has a `PlayerState` struct with the following attributes:
     * `grid` represents an `M` by `N` pixel canvas
     * `loc_x` and `loc_y` represent the cursor coordinates
     * `color` stores the color the player currently has selected
     * `locked` is a boolean state representing a time limit for placing pixels
 * The `game_state` variable is an array representing an `M` by `N` canvas of the same dimensions as the `PlayerState` `grid`.
-
-```c
-This is an example code block
-```
 
 ### Networking
 We have one server that forks when a new client joins. When any one client adds a pixel to the canvas, the new pixel's coordinates and color is sent to the server. The server can send it to all the other clients, and client-side, the graphics are updated according to the new information received. 
@@ -35,16 +39,31 @@ We made the design decisions to only send updates from clients and to render all
 We have tested our networking across multiple machines on the same WiFi network without any issues! If you are running our code on a single machine, it is also able to run with multiple shells.
 
 ### GUI
-We used mouse functionality from the `ncurses` library for the user's pixel location selection, and we used the left and right arrow keys to select the color. The client can move their cursor around the canvas, and the box beneath the cursor will be highlighted in the color they select. The graphics are initialized when the client first connects to the server, and all graphics up to this process are handled solely on the client-side (no information is exchanged with the server). The client double-taps the `ENTER` key to lock in the pixel they have selected with a specific location and color, and that data is sent to the server (and other clients) using the process described under [Networking](#markdown-header-networking).
+![](img/canvas.png)
+_An example of a blank, initialized canvas when a client first joins. As the user moves their cursor around, a pixel appears in their cursor location. They can use the left and right arrow keys to select a color._
+
+We used mouse functionality from the `ncurses` library for the user's pixel location selection, and we used the left and right arrow keys to select the color. The client can move their cursor around the canvas, and the box beneath the cursor will be highlighted in the color they select. The graphics are initialized when the client first connects to the server, and all graphics up to this process are handled solely on the client-side (no information is exchanged with the server). The client double-taps the `ENTER` key to lock in the pixel they have selected with a specific location and color, and that data is sent to the server (and other clients) using the process described under [Networking](#markdown-header-networking). Because drawing a pixel locks the client for 10 seconds, they need to wait for an unlock before drawing another pixel. During this cooldown period, they can still move the cursor about the canvas and use colors.
 
 The server does not have a GUI, as its core functionality is to handle client data.
 
-### Remaining work
-At time of submission, the 
+## Remaining work
+At time of submission, when the server accepts a new client, it is only able to initialize it to a blank canvas (instead of preserving any changes made to the canvas by other clients before the newest client had joined). For example, if three clients join a server, and then any one of the clients draws a pixel on the canvas, that change will be shown on all three of the clients. However, if a fourth client joins after that pixel is drawn, their canvas will not show the new pixel. We are fairly sure that this is because global variables like `game_state` that are modified in forked child processes will not get changed in the main process because forked processes live in a different segment of memory. As of most recently, we are trying to use threading to fix this.
+
+## Dependencies
+If you are running our code, we used the following external libraries that you will need to install on your own machine:
+* `xdotool`
+* `curses` and `ncurses`
+
+You can run the following line in your terminal to install them.
+```shell
+sudo apt-get install xdotool libncurses5-dev libncursesw5-dev
+```
+
+We recommend running in Linux instead of WSL, which was very inconsistent with `xdotool`. You shouldn't need GWSL, since `ncurses` uses ASCII and runs in-terminal.
 
 ## Resources
-* Chapters 10 and 11 in Griffiths, D. (2012). Head First C. O’Reilly Media.
-    * These chapters had to do with forking and networking, respectively.
+* Chapters 10, 11, and 12 in Griffiths, D. (2012). Head First C. O’Reilly Media.
+    * These chapters had to do with forking, networking, and threading, respectively.
 * We found [Beej's guide to network programming](https://beej.us/guide/bgnet/) extremely helpful for all things related to networking and sockets.
 * `ncurses` documentation
     * [Sample `ncurses` code](http://www.paulgriffiths.net/program/c/curses.php)
