@@ -89,10 +89,7 @@ int main(int argc, char *argv[]) {
 	}
 	puts("Socket created");
 
-	
-	// type of socket created
-    // address.sin_addr.s_addr = inet_addr(argv[1]);
-    // address.sin_addr.s_addr = inet_addr("127.0.0.1");
+
     if (argc > 1)
         address.sin_addr.s_addr = inet_addr(argv[1]);
     else
@@ -107,9 +104,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-    // int status = fcntl(server_sock, F_SETFL, fcntl(server_sock, F_GETFL, 0) | O_NONBLOCK);
-    // if (status == -1)
-    //     puts("error calling fcntl");
+
 	
 	puts("Connected\n");
     // open the game terminal/board here?
