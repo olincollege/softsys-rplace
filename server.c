@@ -4,14 +4,9 @@
 
 #define PORT 9999
 
-#define _GNU_SOURCE
-#include <sys/socket.h>
-
 int main(int argc, char *argv[])
 {
     // do initialization stuff for network here 
-
-	system("hostname -I");
 
     int opt = TRUE;
 	int master_socket, addrlen, new_socket, client_socket[30],
@@ -43,10 +38,6 @@ int main(int argc, char *argv[])
 		perror("socket failed");
 		exit(EXIT_FAILURE);
 	}
-
-	int status = fcntl(master_socket, F_SETFL, fcntl(master_socket, F_GETFL, 0) | O_NONBLOCK);
-    if (status == -1)
-        perror("error calling fcntl");
 	
 	// set master socket to allow multiple connections
 	if( setsockopt(master_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&opt,
@@ -58,8 +49,8 @@ int main(int argc, char *argv[])
 	
 	// type of socket created
 	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = htonl(INADDR_ANY);
-	address.sin_port = (in_port_t)htons(PORT);
+	address.sin_addr.s_addr = INADDR_ANY;
+	address.sin_port = htons(PORT);
 		
 	// bind the socket to localhost port 9999
 	if (bind(master_socket, (struct sockaddr *)&address, sizeof(address))<0)
@@ -75,8 +66,6 @@ int main(int argc, char *argv[])
 		perror("listen");
 		exit(EXIT_FAILURE);
 	}
-
-
 		
 	// accept the incoming connection
 	addrlen = sizeof(address);
@@ -118,7 +107,8 @@ int main(int argc, char *argv[])
 		// then its an incoming connection
 		if (FD_ISSET(master_socket, &readfds))
 		{
-			if (new_socket = accept(master_socket,(struct sockaddr *)&address, (socklen_t*)&addrlen)<0)
+			if ((new_socket = accept(master_socket,
+					(struct sockaddr *)&address, (socklen_t*)&addrlen))<0)
 			{
 				perror("accept");
 				exit(EXIT_FAILURE);
@@ -183,3 +173,4 @@ int main(int argc, char *argv[])
     return 0;
 
 }
+
