@@ -77,6 +77,9 @@ The server does not have a GUI, as its core functionality is to handle client da
 ## Remaining work
 At time of submission, when the server accepts a new client, it is only able to initialize it to a blank canvas (instead of preserving any changes made to the canvas by other clients before the newest client had joined). For example, if three clients join a server, and then any one of the clients draws a pixel on the canvas, that change will be shown on all three of the clients. However, if a fourth client joins after that pixel is drawn, their canvas will not show the new pixel. We are fairly sure that this is because global variables like `game_state` that are modified in forked child processes will not get changed in the main process because forked processes live in a different segment of memory. As of most recently, we are trying to use threading to fix this.
 
+## Remaining work update (or lack remaining work)
+As of the morning after the submission deadline, all issues have been resolved! We have fixed issues with how the forking child processes access the global memory. As a result, all new pixels that have been changing are stored properly, and any new compouters that join are properly recieving the most recent version of the board. In it's current state, our project is fully functional. Multiple computer can join the game, either via the network or via mutiple terminals on the host computer via local host. Each instance of the client is able to view changes to the board in realtime and is able to push changes. 
+
 ## Dependencies
 If you are running our code, we used the following external libraries that you will need to install on your own machine:
 * `xdotool`
